@@ -16,6 +16,28 @@ Validación: `npm test`, `npm run build` y `npm run lint`. Las pruebas cubren fe
 anteriores y posteriores al evento, otras zonas del dispositivo, estados y
 contadores, preferencias antiguas, reanudación, simulación, recarga y medianoche.
 
+## Navegación
+
+Las rutas `#inicio`, `#agenda`, `#perfil` y `#detail-ID` usan el historial del
+navegador. Cada cambio de pantalla agrega una entrada; pulsar de nuevo la pestaña
+activa no agrega ninguna. Atrás y Adelante restauran la visita, incluidos los
+filtros, búsqueda y desplazamiento de Agenda. El botón «Actual» permite saltar a
+la actividad en curso sin interferir con la restauración del desplazamiento.
+
+Los botones visibles «Volver» usan el historial interno. En un enlace directo,
+reemplazan la ruta por Agenda (desde detalles) o Inicio (desde Agenda/Perfil).
+El botón Atrás del sistema conserva su comportamiento normal cuando no existe
+historial interno. No se crean entradas ficticias para impedir salir.
+
+Los fragmentos no se envían al servidor: abrir o recargar estas rutas en Cloudflare
+solicita la misma página `/`, sin reglas nuevas de redirección ni BrowserRouter.
+El modo instalado usa la misma navegación; los gestos disponibles dependen del SO.
+
+Pruebas automatizadas: `npm test` cubre recorridos entre pestañas, detalles,
+Atrás/Adelante, recarga, enlaces directos y restauración de filtros/desplazamiento.
+La comprobación física en Android y Safari/PWA instalada de iOS requiere esos
+dispositivos; no queda sustituida por las pruebas automatizadas del navegador.
+
 ## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

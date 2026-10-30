@@ -7,7 +7,7 @@ import React, { act } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Load the actual TS/TSX modules through the application's existing compiler.
-const server = await createServer({ configFile: false, server: { middlewareMode: true }, appType: 'custom' });
+const server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false }, appType: 'custom' });
 after(() => server.close());
 const { TimeUtils } = await server.ssrLoadModule('/src/utils/timeUtils.ts');
 const { PreferencesProvider, usePreferences } = await server.ssrLoadModule('/src/context/PreferencesContext.tsx');

@@ -1,11 +1,15 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
-import { Search, X, Filter, LocateFixed } from 'lucide-react';
+import React, { useMemo, useRef } from 'react';
+import { ArrowLeft, Search, X, Filter, LocateFixed } from 'lucide-react';
+import type { AgendaView } from '../hooks/useNavigation';
 import { TimelineItem } from '../components/timeline/TimelineItem';
 import type { FsyActivity, AgendaFilter } from '../models/types';
 import { getActivityStatus, isTransferActivity } from '../hooks/useClockTicker';
 import type { AgendaClock } from '../hooks/useClockTicker';
 
 interface AgendaPageProps {
+  view: AgendaView;
+  onViewChange: (view: AgendaView) => void;
+  onNavigateBack: () => void;
   clock: AgendaClock;
   activities: FsyActivity[];
   isLoading: boolean;
@@ -23,13 +27,15 @@ const FILTER_OPTIONS: { id: AgendaFilter; label: string }[] = [
 ];
 
 export const AgendaPage: React.FC<AgendaPageProps> = ({
+  view, onViewChange, onNavigateBack,
   clock,
   activities,
   isLoading,
   onNavigateToDetail
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState<AgendaFilter>('ALL');
+  const { searchQuery, selectedFilter } = view;
+  const setSearchQuery = (searchQuery: string) => onViewChange({ ...view, searchQuery });
+  const setSelectedFilter = (selectedFilter: AgendaFilter) => onViewChange({ ...view, selectedFilter });
 
   const { currentMinutes, currentActivity } = clock;
 
@@ -93,21 +99,12 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
     }
   };
 
-  // Initial auto-scroll on mount if in 'ALL' filter without search
-  useEffect(() => {
-    if (currentActivity && selectedFilter === 'ALL' && searchQuery === '') {
-      const timer = setTimeout(() => {
-        scrollToCurrent();
-      }, 350);
-      return () => clearTimeout(timer);
-    }
-  }, [currentActivity, selectedFilter, searchQuery]);
-
   return (
     <div className="flex-1 flex flex-col bg-[#F8FAFC] relative">
       {/* Top Header & Search Surface */}
       <div className="bg-white border-b border-[#E2E8F0] shadow-xs sticky top-0 z-20 px-4 pt-3.5 pb-3">
         <h1 className="text-[22px] font-extrabold text-[#0F2942] tracking-tight">
+          <button type="button" onClick={onNavigateBack} aria-label="Volver" className="inline-flex items-center justify-center w-11 h-11 -ml-2 mr-1 align-middle rounded-full hover:bg-slate-100"><ArrowLeft className="w-5 h-5" /></button>
           Agenda Completa
         </h1>
         <p className="text-[12px] font-normal text-[#64748B] mt-0.5">
@@ -180,8 +177,7 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
             <button
               type="button"
               onClick={() => {
-                setSearchQuery('');
-                setSelectedFilter('ALL');
+                onViewChange({ searchQuery: '', selectedFilter: 'ALL' });
               }}
               className="mt-4 px-4 py-2 bg-[#0284C7] text-white text-[13px] font-bold rounded-full hover:bg-[#0369A1] transition-colors"
             >

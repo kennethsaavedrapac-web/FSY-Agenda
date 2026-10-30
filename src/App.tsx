@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import { MobileContainer } from './components/layout/MobileContainer';
 import { BottomNav } from './components/layout/BottomNav';
-import type { FsyTab } from './components/layout/BottomNav';
+import { useNavigation } from './hooks/useNavigation';
 import { HomePage } from './pages/HomePage';
 import { AgendaPage } from './pages/AgendaPage';
 import { SettingsPage } from './pages/SettingsPage';
@@ -12,52 +12,32 @@ import { useClockTicker } from './hooks/useClockTicker';
 import { useActivities } from './hooks/useActivities';
 
 const AppContent: React.FC = () => {
-  const [currentTab, setCurrentTab] = useState<FsyTab>('home');
-  const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
-
   const { activities, isLoading, reloadSchedule } = useActivities();
   const clock = useClockTicker(activities);
   const { currentMinutes } = clock;
 
-  // Navigation handlers
-  const handleOpenDetail = useCallback((id: number) => {
-    setSelectedActivityId(id);
-    window.history.pushState({ view: 'detail', id }, '', `#detail-${id}`);
-  }, []);
-
-  const handleBackFromDetail = useCallback(() => {
-    if (window.location.hash.startsWith('#detail')) {
-      window.history.back();
-    } else {
-      setSelectedActivityId(null);
-    }
-  }, []);
-
-  // Listen to browser popstate (e.g. mobile back gesture)
-  useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
-      if (event.state && event.state.view === 'detail') {
-        setSelectedActivityId(event.state.id);
-      } else {
-        setSelectedActivityId(null);
-      }
-    };
-
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
+  const { entry, back, navigateTab, openDetail, setAgendaView } = useNavigation(!isLoading);
+  const currentTab = entry.tab;
+  const selectedActivityId = entry.activityId;
 
   const selectedActivity = activities.find((a) => a.id === selectedActivityId) || null;
 
   return (
     <MobileContainer>
       <div className="flex-1 flex flex-col min-h-screen">
-        {selectedActivityId !== null && selectedActivity ? (
-          <DetailPage
-            activity={selectedActivity}
-            currentMinutes={currentMinutes}
-            onNavigateBack={handleBackFromDetail}
-          />
+        {selectedActivityId !== null ? (
+          selectedActivity ? (
+            <DetailPage
+              activity={selectedActivity}
+              currentMinutes={currentMinutes}
+              onNavigateBack={back}
+            />
+          ) : (
+            <div className="p-4">
+              <button type="button" onClick={back} className="text-[#0284C7] font-semibold">Volver a Agenda</button>
+              <p className="mt-3">{isLoading ? 'Cargando actividad…' : 'Actividad no encontrada.'}</p>
+            </div>
+          )
         ) : (
           <div className="flex-1 flex flex-col pb-[var(--fsy-nav-space)]">
             {currentTab === 'home' && (
@@ -65,32 +45,32 @@ const AppContent: React.FC = () => {
                 clock={clock}
                 activities={activities}
                 isLoading={isLoading}
-                onNavigateToDetail={handleOpenDetail}
-                onNavigateToAgenda={() => setCurrentTab('agenda')}
-                onNavigateToSettings={() => setCurrentTab('settings')}
+                onNavigateToDetail={openDetail}
+                onNavigateToAgenda={() => navigateTab('agenda')}
+                onNavigateToSettings={() => navigateTab('settings')}
               />
             )}
 
             {currentTab === 'agenda' && (
               <AgendaPage
+                view={entry.agenda}
+                onViewChange={setAgendaView}
+                onNavigateBack={back}
                 clock={clock}
                 activities={activities}
                 isLoading={isLoading}
-                onNavigateToDetail={handleOpenDetail}
+                onNavigateToDetail={openDetail}
               />
             )}
 
             {currentTab === 'settings' && (
-              <SettingsPage onReloadSchedule={reloadSchedule} />
+              <SettingsPage onReloadSchedule={reloadSchedule} onNavigateBack={back} />
             )}
 
             {/* Bottom Navigation fixed at bottom */}
             <BottomNav
               currentTab={currentTab}
-              onTabSelected={(tab) => {
-                setSelectedActivityId(null);
-                setCurrentTab(tab);
-              }}
+              onTabSelected={navigateTab}
             />
           </div>
         )}

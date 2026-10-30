@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  ArrowLeft,
   User,
   Bell,
   Sliders,
@@ -14,6 +15,7 @@ import { useClock } from '../context/ClockContext';
 import type { PresetTime } from '../models/types';
 
 interface SettingsPageProps {
+  onNavigateBack: () => void;
   onReloadSchedule: () => Promise<void>;
 }
 
@@ -35,7 +37,7 @@ const SIMULATION_PRESETS: PresetTime[] = [
   { label: '18:45 Despedida', minutes: 18 * 60 + 45 }
 ];
 
-export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) => {
+export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule, onNavigateBack }) => {
   const {
     counselorName,
     companyName,
@@ -83,6 +85,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
       {/* Top Header */}
       <div className="bg-white border-b border-[#E2E8F0] px-4 pt-3.5 pb-3 shadow-xs sticky top-0 z-20">
         <h1 className="text-[22px] font-extrabold text-[#0F2942] tracking-tight">
+          <button type="button" onClick={onNavigateBack} aria-label="Volver" className="inline-flex items-center justify-center w-11 h-11 -ml-2 mr-1 align-middle rounded-full hover:bg-slate-100"><ArrowLeft className="w-5 h-5" /></button>
           Perfil y Ajustes
         </h1>
         <p className="text-[12px] font-normal text-[#64748B] mt-0.5">

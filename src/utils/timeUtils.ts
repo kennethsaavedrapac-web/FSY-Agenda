@@ -42,7 +42,7 @@ export const TimeUtils = {
     const dayOfMonth = eventDay.getUTCDate();
     const month = months[eventDay.getUTCMonth()];
 
-    return `Hoy • ${dayOfWeek}, ${dayOfMonth} de ${month}`;
+    return `${dayOfWeek} ${dayOfMonth} de ${month}`;
   },
 
   getCurrentMinutes(date: Date = new Date()): number {

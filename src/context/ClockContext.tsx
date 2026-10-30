@@ -4,6 +4,7 @@ import { usePreferences } from './PreferencesContext';
 import { TimeUtils } from '../utils/timeUtils';
 
 interface ClockValue {
+  realDate: Date;
   currentDate: Date;
   currentMinutes: number;
 }
@@ -20,10 +21,13 @@ export function ClockProvider({ children }: { children: ReactNode }) {
       clearTimeout(timer);
       const now = new Date();
       setRealDate(now);
-      // All displayed counters have minute precision. Keep one timer aligned to
-      // the next minute, and suspend it in the background or during simulation.
-      if (!simulationActive && document.visibilityState === 'visible') {
-        timer = setTimeout(sync, 60000 - (now.getTime() % 60000));
+      // Reuse one timer: minute updates in real mode, midnight updates during
+      // simulation so the header always keeps the real Nicaragua date.
+      if (document.visibilityState === 'visible') {
+        const delay = simulationActive
+          ? (1440 - TimeUtils.getCurrentMinutes(now)) * 60000 - now.getSeconds() * 1000 - now.getMilliseconds()
+          : 60000 - (now.getTime() % 60000);
+        timer = setTimeout(sync, delay);
       }
     };
     sync();
@@ -44,7 +48,7 @@ export function ClockProvider({ children }: { children: ReactNode }) {
     : realDate;
 
   return (
-    <ClockContext.Provider value={{ currentDate, currentMinutes: TimeUtils.getAgendaMinutes(currentDate) }}>
+    <ClockContext.Provider value={{ realDate, currentDate, currentMinutes: TimeUtils.getAgendaMinutes(currentDate) }}>
       {children}
     </ClockContext.Provider>
   );

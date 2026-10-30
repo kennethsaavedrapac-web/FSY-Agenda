@@ -50,7 +50,7 @@ export function useClockTicker(activities: FsyActivity[]) {
     advanceMinutes
   } = usePreferences();
 
-  const { currentMinutes, currentDate } = useClock();
+  const { currentMinutes, currentDate, realDate } = useClock();
   const notifiedActivitiesRef = useRef<Set<string>>(new Set());
   const currentDay = TimeUtils.getEventDateTime(currentDate).date;
 
@@ -123,6 +123,7 @@ export function useClockTicker(activities: FsyActivity[]) {
   }, [currentMinutes, currentDay, nextActivity, notificationsEnabled, advanceMinutes, simulationActive]);
 
   return {
+    realDate,
     currentDate,
     currentMinutes,
     currentActivity,

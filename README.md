@@ -9,7 +9,8 @@ Cada inicio o recarga activa Hora real e ignora las preferencias antiguas de
 simulación. La simulación de Ajustes es manual, permanece solo durante la sesión y
 permite volver inmediatamente a Hora real. Su fecha tampoco altera los estados.
 Un único temporizador actualiza al cambiar de minuto, se pausa en segundo plano y
-durante la simulación, y se sincroniza al recuperar visibilidad, foco o la página.
+se sincroniza al recuperar visibilidad, foco o la página. Durante la simulación,
+el mismo temporizador actualiza la fecha real de la cabecera a medianoche en Nicaragua.
 
 Validación: `npm test`, `npm run build` y `npm run lint`. Las pruebas cubren fechas
 anteriores y posteriores al evento, otras zonas del dispositivo, estados y

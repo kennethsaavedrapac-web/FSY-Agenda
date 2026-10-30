@@ -59,7 +59,7 @@ const AppContent: React.FC = () => {
             onNavigateBack={handleBackFromDetail}
           />
         ) : (
-          <>
+          <div className="flex-1 flex flex-col pb-[var(--fsy-nav-space)]">
             {currentTab === 'home' && (
               <HomePage
                 clock={clock}
@@ -92,7 +92,7 @@ const AppContent: React.FC = () => {
                 setCurrentTab(tab);
               }}
             />
-          </>
+          </div>
         )}
       </div>
     </MobileContainer>

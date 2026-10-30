@@ -11,13 +11,15 @@ interface BottomNavProps {
 export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onTabSelected }) => {
   return (
     <nav
-      className="w-full bg-white border-t border-[#F1F5F9] px-6 py-1.5 flex items-center justify-around z-30 sticky bottom-0"
-      style={{ paddingBottom: 'max(0.375rem, env(safe-area-inset-bottom))' }}
+      aria-label="Navegación principal"
+      className="fixed bottom-0 inset-x-0 mx-auto w-full max-w-md h-[var(--fsy-nav-space)] bg-white border-t border-[#F1F5F9] px-6 py-1.5 flex items-center justify-around z-30"
+      style={{ paddingBottom: 'calc(0.375rem + var(--fsy-safe-bottom))' }}
     >
       {/* Tab 1: Inicio */}
       <button
         type="button"
         onClick={() => onTabSelected('home')}
+        aria-current={currentTab === 'home' ? 'page' : undefined}
         className={`flex flex-col items-center justify-center flex-1 py-1 transition-all ${
           currentTab === 'home' ? 'text-[#0284C7]' : 'text-[#64748B]'
         }`}
@@ -46,6 +48,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onTabSelected 
       <button
         type="button"
         onClick={() => onTabSelected('agenda')}
+        aria-current={currentTab === 'agenda' ? 'page' : undefined}
         className={`flex flex-col items-center justify-center flex-1 py-1 transition-all ${
           currentTab === 'agenda' ? 'text-[#0284C7]' : 'text-[#64748B]'
         }`}
@@ -73,6 +76,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ currentTab, onTabSelected 
       <button
         type="button"
         onClick={() => onTabSelected('settings')}
+        aria-current={currentTab === 'settings' ? 'page' : undefined}
         className={`flex flex-col items-center justify-center flex-1 py-1 transition-all ${
           currentTab === 'settings' ? 'text-[#0284C7]' : 'text-[#64748B]'
         }`}

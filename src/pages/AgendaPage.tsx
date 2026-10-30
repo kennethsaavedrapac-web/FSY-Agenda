@@ -210,7 +210,6 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
           </div>
         )}
 
-        <div className="h-16" />
       </div>
 
       {/* Floating Action Button (FAB Quick Jump to Current Activity) */}
@@ -218,7 +217,7 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
         <button
           type="button"
           onClick={scrollToCurrent}
-          className="fixed bottom-20 right-4 md:right-[calc(50%-13rem+1rem)] z-30 bg-[#D1FAE5] text-[#059669] hover:bg-[#A7F3D0] active:scale-95 transition-all shadow-md px-3.5 py-2.5 rounded-full flex items-center space-x-1.5 font-bold text-[13px] border border-[#A7F3D0]"
+          className="fixed bottom-[calc(var(--fsy-nav-space)+0.5rem)] right-4 md:right-[calc(50%-13rem+1rem)] z-30 bg-[#D1FAE5] text-[#059669] hover:bg-[#A7F3D0] active:scale-95 transition-all shadow-md px-3.5 py-2.5 rounded-full flex items-center space-x-1.5 font-bold text-[13px] border border-[#A7F3D0]"
         >
           <LocateFixed className="w-4 h-4 text-[#059669]" />
           <span>Actual</span>

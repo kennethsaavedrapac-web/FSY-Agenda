@@ -139,7 +139,6 @@ export const HomePage: React.FC<HomePageProps> = ({
           </div>
         </div>
 
-        <div className="h-6" />
       </div>
     </div>
   );

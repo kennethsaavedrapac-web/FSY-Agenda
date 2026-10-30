@@ -25,6 +25,10 @@
 }
 
 :root {
+  /* Original nav: 60px buttons + 12px vertical padding + 1px border.
+     Share its total height with page padding and floating controls. */
+  --fsy-safe-bottom: env(safe-area-inset-bottom, 0px);
+  --fsy-nav-space: calc(4.5625rem + var(--fsy-safe-bottom));
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;

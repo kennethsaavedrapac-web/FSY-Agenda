@@ -367,12 +367,11 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
           </button>
         </div>
 
-        <div className="h-10" />
       </div>
 
       {/* Floating Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 bg-[#0F2942] text-white px-4 py-2.5 rounded-full shadow-lg text-[13px] font-semibold flex items-center space-x-2 animate-bounce">
+        <div className="fixed bottom-[calc(var(--fsy-nav-space)+0.5rem)] left-1/2 -translate-x-1/2 z-50 bg-[#0F2942] text-white px-4 py-2.5 rounded-full shadow-lg text-[13px] font-semibold flex items-center space-x-2 animate-bounce">
           <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />
           <span>{toastMessage}</span>
         </div>

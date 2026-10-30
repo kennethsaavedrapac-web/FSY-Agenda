@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0284C7"/>
+      <stop offset="60%" stop-color="#0369A1"/>
+      <stop offset="100%" stop-color="#075985"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky background with rounded corners -->
+  <path d="M12,0 h40 c6.63,0 12,5.37 12,12 v40 c0,6.63 -5.37,12 -12,12 H12 C5.37,64 0,58.63 0,52 V12 C0,5.37 5.37,0 12,0 z" fill="url(#skyGrad)"/>
+
+  <!-- Background soft hill -->
+  <path d="M0,48 Q32,42 64,48 L64,64 L0,64 Z" fill="#0D9488"/>
+
+  <!-- Foreground darker hill -->
+  <path d="M0,52 Q32,46 64,52 L64,64 L0,64 Z" fill="#047857"/>
+
+  <!-- Pine trees on left -->
+  <path d="M8,54 L5,62 H11 Z M12,50 L8,60 H16 Z M18,52 L14,62 H22 Z" fill="#065F46"/>
+
+  <!-- Pine trees on right -->
+  <path d="M48,52 L44,62 H52 Z M54,50 L50,60 H58 Z M58,54 L55,62 H61 Z" fill="#065F46"/>
+
+  <!-- Center main tower and spire -->
+  <path d="M31,10 L32,6 L33,10 V24 H31 Z" fill="#FFFFFF"/>
+  <path d="M30,24 H34 V34 H30 Z" fill="#FFFFFF"/>
+
+  <!-- Left side tower and spire -->
+  <path d="M23,18 L24,15 L25,18 V28 H23 Z" fill="#FFFFFF"/>
+
+  <!-- Right side tower and spire -->
+  <path d="M39,18 L40,15 L41,18 V28 H39 Z" fill="#FFFFFF"/>
+
+  <!-- Main Temple Base Structure -->
+  <path d="M18,34 H46 V56 H18 Z" fill="#FFFFFF"/>
+
+  <!-- Temple details / arches cutout -->
+  <path d="M22,40 H26 V52 H22 Z M30,38 H34 V52 H30 Z M38,40 H42 V52 H38 Z" fill="#E0F2FE"/>
+
+  <!-- Corner buttresses -->
+  <path d="M16,30 H20 V56 H16 Z M44,30 H48 V56 H44 Z" fill="#FFFFFF"/>
+</svg>

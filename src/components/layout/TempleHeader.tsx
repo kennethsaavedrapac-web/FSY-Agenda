@@ -1,11 +1,11 @@
 import React from 'react';
-import { Bell, Sliders, X } from 'lucide-react';
+import { Settings, Sliders, X } from 'lucide-react';
 import { TimeUtils } from '../../utils/timeUtils';
 
 interface TempleHeaderProps {
   isSimulationActive: boolean;
   simulatedMinutes: number;
-  onNotificationClick: () => void;
+  onSettingsClick: () => void;
   onResetSimulation: () => void;
   currentDateText?: string;
 }
@@ -13,7 +13,7 @@ interface TempleHeaderProps {
 export const TempleHeader: React.FC<TempleHeaderProps> = ({
   isSimulationActive,
   simulatedMinutes,
-  onNotificationClick,
+  onSettingsClick,
   onResetSimulation,
   currentDateText = 'Sábado • FSY de 1 día'
 }) => {
@@ -95,14 +95,14 @@ export const TempleHeader: React.FC<TempleHeaderProps> = ({
           </div>
         </div>
 
-        {/* Notification Bell Button */}
+        {/* Settings Button */}
         <button
           type="button"
-          onClick={onNotificationClick}
-          aria-label="Notificaciones y Ajustes"
-          className="p-2 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-[#1E293B]"
+          onClick={onSettingsClick}
+          aria-label="Configuración"
+          className="w-11 h-11 flex-shrink-0 inline-flex items-center justify-center rounded-full hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0284C7] transition-colors text-[#1E293B]"
         >
-          <Bell className="w-[26px] h-[26px]" strokeWidth={1.8} />
+          <Settings className="w-[26px] h-[26px]" strokeWidth={1.8} aria-hidden="true" />
         </button>
       </div>
 

@@ -7,7 +7,6 @@ import { FreeTimeCard } from '../components/cards/FreeTimeCard';
 import { EventStatusCard } from '../components/cards/EventStatusCard';
 import { TimelineItem } from '../components/timeline/TimelineItem';
 import type { AgendaClock } from '../hooks/useClockTicker';
-import { TimeUtils } from '../utils/timeUtils';
 import { usePreferences } from '../context/PreferencesContext';
 import type { FsyActivity } from '../models/types';
 
@@ -53,9 +52,9 @@ export const HomePage: React.FC<HomePageProps> = ({
       <TempleHeader
         isSimulationActive={simulationActive}
         simulatedMinutes={simulatedMinutes}
-        onNotificationClick={onNavigateToSettings}
+        onSettingsClick={onNavigateToSettings}
         onResetSimulation={resetSimulation}
-        currentDateText={`${simulationActive ? 'Simulación' : 'Hora real'} • ${TimeUtils.getTodayFormattedDate(clock.currentDate).replace('Hoy • ', '')}`}
+        currentDateText="Sábado • FSY de 1 día"
       />
 
       {/* Main Content Area */}

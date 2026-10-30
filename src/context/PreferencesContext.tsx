@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { CounselorPreferences } from '../models/types';
+import { EVENT_DATE, TimeUtils } from '../utils/timeUtils';
 
 interface PreferencesContextType extends CounselorPreferences {
   setCounselorName: (name: string) => void;
@@ -8,6 +9,7 @@ interface PreferencesContextType extends CounselorPreferences {
   setAdvanceMinutes: (minutes: number) => void;
   setSimulationActive: (active: boolean) => void;
   setSimulatedMinutes: (minutes: number) => void;
+  setSimulatedDate: (date: string) => void;
   resetSimulation: () => void;
   requestNotificationPermission: () => Promise<boolean>;
 }
@@ -17,8 +19,9 @@ const DEFAULT_PREFS: CounselorPreferences = {
   companyName: 'Compañía FSY',
   notificationsEnabled: true,
   advanceMinutes: 10,
-  simulationActive: true,
-  simulatedMinutes: 518 // 08:38 a. m.
+  simulationActive: false,
+  simulatedMinutes: 518, // 08:38 a. m. (manual preview only)
+  simulatedDate: EVENT_DATE ?? TimeUtils.getEventDateTime().date
 };
 
 const PreferencesContext = createContext<PreferencesContextType | null>(null);
@@ -42,15 +45,18 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
     return val !== null ? parseInt(val, 10) : DEFAULT_PREFS.advanceMinutes;
   });
 
-  const [simulationActive, setSimulationActiveState] = useState<boolean>(() => {
-    const val = localStorage.getItem('fsy_simulation_active');
-    return val !== null ? val === 'true' : DEFAULT_PREFS.simulationActive;
-  });
+  // Simulation belongs to this session only; old persisted values are never read.
+  const [simulationActive, setSimulationActiveState] = useState(false);
+  const [simulatedMinutes, setSimulatedMinutesState] = useState(DEFAULT_PREFS.simulatedMinutes);
+  const [simulatedDate, setSimulatedDateState] = useState(DEFAULT_PREFS.simulatedDate);
 
-  const [simulatedMinutes, setSimulatedMinutesState] = useState<number>(() => {
-    const val = localStorage.getItem('fsy_simulated_minutes');
-    return val !== null ? parseInt(val, 10) : DEFAULT_PREFS.simulatedMinutes;
-  });
+  useEffect(() => {
+    try {
+      ['fsy_simulation_active', 'fsy_simulated_minutes', 'fsy_simulated_date'].forEach((key) => localStorage.removeItem(key));
+    } catch {
+      // Storage may be unavailable; the in-memory real-time default still applies.
+    }
+  }, []);
 
   const setCounselorName = (name: string) => {
     setCounselorNameState(name);
@@ -77,13 +83,20 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const setSimulationActive = (active: boolean) => {
     setSimulationActiveState(active);
-    localStorage.setItem('fsy_simulation_active', String(active));
   };
 
   const setSimulatedMinutes = (minutes: number) => {
-    const clamped = Math.max(0, Math.min(1439, minutes));
+    if (!Number.isFinite(minutes)) return;
+    const clamped = Math.max(0, Math.min(1439, Math.floor(minutes)));
     setSimulatedMinutesState(clamped);
-    localStorage.setItem('fsy_simulated_minutes', String(clamped));
+  };
+
+  const setSimulatedDate = (date: string) => {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+    const parsed = TimeUtils.fromEventDateTime(date, 0);
+    if (Number.isFinite(parsed.getTime()) && TimeUtils.getEventDateTime(parsed).date === date) {
+      setSimulatedDateState(date);
+    }
   };
 
   const resetSimulation = () => {
@@ -107,12 +120,14 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
         advanceMinutes,
         simulationActive,
         simulatedMinutes,
+        simulatedDate,
         setCounselorName,
         setCompanyName,
         setNotificationsEnabled,
         setAdvanceMinutes,
         setSimulationActive,
         setSimulatedMinutes,
+        setSimulatedDate,
         resetSimulation,
         requestNotificationPermission
       }}

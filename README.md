@@ -1,4 +1,21 @@
-# React + TypeScript + Vite
+# FSY Agenda — Distrito Granada 2026
+
+La agenda funciona como el día del FSY cualquier día del año. El reloj compartido
+usa `new Date()` y extrae únicamente la hora de `America/Managua`; la fecha oficial
+del 7 de noviembre de 2026 es informativa y no afecta estados ni cuentas regresivas.
+Las actividades sin hora de finalización conservan su cierre abierto.
+
+Cada inicio o recarga activa Hora real e ignora las preferencias antiguas de
+simulación. La simulación de Ajustes es manual, permanece solo durante la sesión y
+permite volver inmediatamente a Hora real. Su fecha tampoco altera los estados.
+Un único temporizador actualiza al cambiar de minuto, se pausa en segundo plano y
+durante la simulación, y se sincroniza al recuperar visibilidad, foco o la página.
+
+Validación: `npm test`, `npm run build` y `npm run lint`. Las pruebas cubren fechas
+anteriores y posteriores al evento, otras zonas del dispositivo, estados y
+contadores, preferencias antiguas, reanudación, simulación, recarga y medianoche.
+
+## React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

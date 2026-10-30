@@ -9,7 +9,8 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { usePreferences } from '../context/PreferencesContext';
-import { TimeUtils } from '../utils/timeUtils';
+import { EVENT_DATE, TimeUtils } from '../utils/timeUtils';
+import { useClock } from '../context/ClockContext';
 import type { PresetTime } from '../models/types';
 
 interface SettingsPageProps {
@@ -42,13 +43,17 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
     advanceMinutes,
     simulationActive,
     simulatedMinutes,
+    simulatedDate,
     setCounselorName,
     setCompanyName,
     setNotificationsEnabled,
     setAdvanceMinutes,
     setSimulationActive,
-    setSimulatedMinutes
+    setSimulatedMinutes,
+    setSimulatedDate,
+    resetSimulation
   } = usePreferences();
+  const { currentDate } = useClock();
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isReloading, setIsReloading] = useState(false);
@@ -224,6 +229,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
               <input
                 type="checkbox"
                 checked={simulationActive}
+                aria-label="Activar simulación de fecha y hora"
                 onChange={(e) => setSimulationActive(e.target.checked)}
                 className="sr-only peer"
               />
@@ -231,8 +237,37 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
             </label>
           </div>
 
+          <p className="mt-3 text-[12px] text-[#64748B]">
+            {simulationActive ? 'Simulación manual' : 'Hora real'} • {TimeUtils.getEventDateTime(currentDate).date} • {TimeUtils.minutesToAmPmString(TimeUtils.getCurrentMinutes(currentDate))}
+            <br />Nicaragua · America/Managua (UTC-6)
+            <br />La agenda usa solo la hora; la fecha no cambia los estados.
+          </p>
+
           {simulationActive && (
             <div className="mt-3.5 pt-3.5 border-t border-[#FDE68A] space-y-3">
+              <div className="flex gap-3">
+                <label className="flex-1 min-w-0 text-[12px] font-semibold text-[#92400E]">
+                  Fecha simulada
+                  <input
+                    type="date"
+                    value={simulatedDate}
+                    onChange={(e) => setSimulatedDate(e.target.value)}
+                    className="mt-1 w-full rounded-[12px] border border-[#FDE68A] bg-white p-2 text-[14px]"
+                  />
+                </label>
+                <label className="flex-1 min-w-0 text-[12px] font-semibold text-[#92400E]">
+                  Hora simulada
+                  <input
+                    type="time"
+                    value={TimeUtils.minutesToTimeString(simulatedMinutes)}
+                    onChange={(e) => { if (e.target.value) setSimulatedMinutes(TimeUtils.parseTimeToMinutes(e.target.value)); }}
+                    className="mt-1 w-full rounded-[12px] border border-[#FDE68A] bg-white p-2 text-[14px]"
+                  />
+                </label>
+              </div>
+              <button type="button" onClick={resetSimulation} className="text-[13px] font-bold text-[#B45309] hover:underline">
+                Volver a hora real
+              </button>
               {/* Simulated Time Box */}
               <div className="bg-white rounded-[12px] border border-[#FDE68A] p-3 flex items-center justify-between shadow-xs">
                 <span className="text-[13px] font-medium text-[#64748B]">
@@ -303,6 +338,9 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule }) 
           <div className="space-y-1">
             <p className="text-[14px] font-bold text-[#0F2942]">
               FSY Distrito Granada 2026
+            </p>
+            <p className="text-[12px] text-[#1E293B]">
+              Fecha del evento: {EVENT_DATE ?? 'Por confirmar'} · Nicaragua (UTC-6)
             </p>
             <p className="text-[12px] text-[#1E293B]">
               La Iglesia de Jesucristo de los Santos de los Últimos Días

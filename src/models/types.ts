@@ -33,6 +33,7 @@ export interface CounselorPreferences {
   advanceMinutes: number;
   simulationActive: boolean;
   simulatedMinutes: number;
+  simulatedDate: string;
 }
 
 export interface CategoryStyle {

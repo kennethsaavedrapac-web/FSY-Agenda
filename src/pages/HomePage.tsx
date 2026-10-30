@@ -6,11 +6,13 @@ import { NextActivityCard } from '../components/cards/NextActivityCard';
 import { FreeTimeCard } from '../components/cards/FreeTimeCard';
 import { EventStatusCard } from '../components/cards/EventStatusCard';
 import { TimelineItem } from '../components/timeline/TimelineItem';
-import { useClockTicker } from '../hooks/useClockTicker';
+import type { AgendaClock } from '../hooks/useClockTicker';
+import { TimeUtils } from '../utils/timeUtils';
 import { usePreferences } from '../context/PreferencesContext';
 import type { FsyActivity } from '../models/types';
 
 interface HomePageProps {
+  clock: AgendaClock;
   activities: FsyActivity[];
   isLoading: boolean;
   onNavigateToDetail: (id: number) => void;
@@ -19,6 +21,7 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
+  clock,
   activities,
   isLoading,
   onNavigateToDetail,
@@ -34,7 +37,7 @@ export const HomePage: React.FC<HomePageProps> = ({
     isFreeTime,
     isEventFinished,
     firstActivityTime
-  } = useClockTicker(activities);
+  } = clock;
 
   if (isLoading) {
     return (
@@ -52,7 +55,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         simulatedMinutes={simulatedMinutes}
         onNotificationClick={onNavigateToSettings}
         onResetSimulation={resetSimulation}
-        currentDateText="Sábado • FSY de 1 día"
+        currentDateText={`${simulationActive ? 'Simulación' : 'Hora real'} • ${TimeUtils.getTodayFormattedDate(clock.currentDate).replace('Hoy • ', '')}`}
       />
 
       {/* Main Content Area */}

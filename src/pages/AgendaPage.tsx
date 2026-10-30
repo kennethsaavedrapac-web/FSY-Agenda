@@ -2,9 +2,11 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { Search, X, Filter, LocateFixed } from 'lucide-react';
 import { TimelineItem } from '../components/timeline/TimelineItem';
 import type { FsyActivity, AgendaFilter } from '../models/types';
-import { useClockTicker, getActivityStatus, isTransferActivity } from '../hooks/useClockTicker';
+import { getActivityStatus, isTransferActivity } from '../hooks/useClockTicker';
+import type { AgendaClock } from '../hooks/useClockTicker';
 
 interface AgendaPageProps {
+  clock: AgendaClock;
   activities: FsyActivity[];
   isLoading: boolean;
   onNavigateToDetail: (id: number) => void;
@@ -21,6 +23,7 @@ const FILTER_OPTIONS: { id: AgendaFilter; label: string }[] = [
 ];
 
 export const AgendaPage: React.FC<AgendaPageProps> = ({
+  clock,
   activities,
   isLoading,
   onNavigateToDetail
@@ -28,7 +31,7 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<AgendaFilter>('ALL');
 
-  const { currentMinutes, currentActivity } = useClockTicker(activities);
+  const { currentMinutes, currentActivity } = clock;
 
   const itemRefs = useRef<Record<number, HTMLDivElement | null>>({});
 

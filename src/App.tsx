@@ -6,18 +6,18 @@ import { HomePage } from './pages/HomePage';
 import { AgendaPage } from './pages/AgendaPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { DetailPage } from './pages/DetailPage';
-import { PreferencesProvider, usePreferences } from './context/PreferencesContext';
+import { PreferencesProvider } from './context/PreferencesContext';
+import { ClockProvider } from './context/ClockContext';
+import { useClockTicker } from './hooks/useClockTicker';
 import { useActivities } from './hooks/useActivities';
-import { TimeUtils } from './utils/timeUtils';
 
 const AppContent: React.FC = () => {
   const [currentTab, setCurrentTab] = useState<FsyTab>('home');
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
 
   const { activities, isLoading, reloadSchedule } = useActivities();
-  const { simulationActive, simulatedMinutes } = usePreferences();
-
-  const currentMinutes = simulationActive ? simulatedMinutes : TimeUtils.getCurrentMinutes();
+  const clock = useClockTicker(activities);
+  const { currentMinutes } = clock;
 
   // Navigation handlers
   const handleOpenDetail = useCallback((id: number) => {
@@ -62,6 +62,7 @@ const AppContent: React.FC = () => {
           <>
             {currentTab === 'home' && (
               <HomePage
+                clock={clock}
                 activities={activities}
                 isLoading={isLoading}
                 onNavigateToDetail={handleOpenDetail}
@@ -72,6 +73,7 @@ const AppContent: React.FC = () => {
 
             {currentTab === 'agenda' && (
               <AgendaPage
+                clock={clock}
                 activities={activities}
                 isLoading={isLoading}
                 onNavigateToDetail={handleOpenDetail}
@@ -100,7 +102,9 @@ const AppContent: React.FC = () => {
 export function App() {
   return (
     <PreferencesProvider>
-      <AppContent />
+      <ClockProvider>
+        <AppContent />
+      </ClockProvider>
     </PreferencesProvider>
   );
 }

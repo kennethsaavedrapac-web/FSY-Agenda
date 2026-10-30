@@ -26,7 +26,7 @@ const AppContent: React.FC = () => {
 
   return (
     <MobileContainer>
-      <div className="flex-1 flex flex-col min-h-screen">
+      <div className="flex-1 flex flex-col min-h-screen bg-white dark:bg-[#0B1220] transition-colors">
         {selectedActivityId !== null ? (
           selectedActivity ? (
             <DetailPage
@@ -35,9 +35,13 @@ const AppContent: React.FC = () => {
               onNavigateBack={back}
             />
           ) : (
-            <div className="p-4">
-              <button type="button" onClick={back} className="text-[#0284C7] font-semibold">Volver a Agenda</button>
-              <p className="mt-3">{isLoading ? 'Cargando actividad…' : 'Actividad no encontrada.'}</p>
+            <div className="p-4 bg-white dark:bg-[#0B1220] flex-1">
+              <button type="button" onClick={back} className="text-[#0284C7] dark:text-[#38BDF8] font-semibold">
+                Volver a Agenda
+              </button>
+              <p className="mt-3 text-[#0F172A] dark:text-[#F1F5F9]">
+                {isLoading ? 'Cargando actividad…' : 'Actividad no encontrada.'}
+              </p>
             </div>
           )
         ) : (
@@ -66,9 +70,13 @@ const AppContent: React.FC = () => {
             )}
 
             {currentTab === 'settings' && (
-              <SettingsPage onReloadSchedule={reloadSchedule} onNavigateBack={back}
-                installation={installation} installInstructionsOpen={entry.overlay === 'install'}
-                onOpenInstallInstructions={openInstallInstructions} />
+              <SettingsPage
+                onReloadSchedule={reloadSchedule}
+                onNavigateBack={back}
+                installation={installation}
+                installInstructionsOpen={entry.overlay === 'install'}
+                onOpenInstallInstructions={openInstallInstructions}
+              />
             )}
 
             {/* Bottom Navigation fixed at bottom */}

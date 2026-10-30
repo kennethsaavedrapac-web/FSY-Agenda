@@ -26,6 +26,9 @@ export interface FsyActivity {
 
 export type ActivityStatus = 'FINISHED' | 'CURRENT' | 'UPCOMING';
 
+export type ThemeMode = 'light' | 'dark' | 'auto';
+export type ResolvedTheme = 'light' | 'dark';
+
 export interface CounselorPreferences {
   counselorName: string;
   companyName: string;
@@ -34,6 +37,7 @@ export interface CounselorPreferences {
   simulationActive: boolean;
   simulatedMinutes: number;
   simulatedDate: string;
+  theme: ThemeMode;
 }
 
 export interface CategoryStyle {
@@ -41,6 +45,8 @@ export interface CategoryStyle {
   label: string;
   tint: string;
   background: string;
+  darkTint?: string;
+  darkBackground?: string;
 }
 
 export type AgendaFilter = 
@@ -56,4 +62,3 @@ export interface PresetTime {
   label: string;
   minutes: number;
 }
-

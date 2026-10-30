@@ -29,19 +29,19 @@ export const CurrentActivityCard: React.FC<CurrentActivityCardProps> = ({
       role="button"
       tabIndex={0}
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') onClick(); }}
-      className="w-full rounded-[20px] bg-[#F0FBF5] border border-[#BCEBD3] p-[18px] cursor-pointer transition-all active:scale-[0.99] hover:shadow-xs focus:outline-none"
+      className="w-full rounded-[20px] bg-[#F0FBF5] dark:bg-[#10241E] border border-[#BCEBD3] dark:border-[#1C4E3D] p-[18px] cursor-pointer transition-all active:scale-[0.99] hover:shadow-xs focus:outline-none shadow-xs"
     >
       {/* Top Header Pill Badges */}
       <div className="flex items-center justify-between mb-3.5">
         {/* Solid Green "Actividad actual" */}
-        <div className="bg-[#388E3C] text-white px-3.5 py-1.5 rounded-full flex items-center space-x-1.5 shadow-xs">
+        <div className="bg-[#388E3C] dark:bg-[#059669] text-white px-3.5 py-1.5 rounded-full flex items-center space-x-1.5 shadow-xs">
           <Play className="w-3.5 h-3.5 fill-white" />
           <span className="text-[13px] font-bold tracking-tight">Actividad actual</span>
         </div>
 
         {/* Soft Green "Quedan X min" */}
-        <div className="bg-[#DCF5E8] text-[#2E7D32] px-3 py-1.5 rounded-full flex items-center space-x-1.5">
-          <Clock className="w-3.5 h-3.5 text-[#2E7D32]" />
+        <div className="bg-[#DCF5E8] dark:bg-[#064E3B] text-[#2E7D32] dark:text-[#6EE7B7] px-3 py-1.5 rounded-full flex items-center space-x-1.5">
+          <Clock className="w-3.5 h-3.5 text-[#2E7D32] dark:text-[#6EE7B7]" />
           <span className="text-[12px] font-bold">{remainingText}</span>
         </div>
       </div>
@@ -49,19 +49,19 @@ export const CurrentActivityCard: React.FC<CurrentActivityCardProps> = ({
       {/* Main Content */}
       <div className="flex items-center space-x-3.5">
         {/* Circle Avatar (Green 54px) */}
-        <div className="w-[54px] h-[54px] rounded-full bg-[#4CAF50] flex items-center justify-center flex-shrink-0 shadow-xs">
+        <div className="w-[54px] h-[54px] rounded-full bg-[#4CAF50] dark:bg-[#059669] flex items-center justify-center flex-shrink-0 shadow-xs">
           <Users className="w-7 h-7 text-white" />
         </div>
 
         {/* Title, Time, Location */}
         <div className="flex-1 min-w-0">
-          <h2 className="text-[19px] font-bold text-[#0F172A] leading-[24px]">
+          <h2 className="text-[19px] font-bold text-[#0F172A] dark:text-[#F1F5F9] leading-[24px]">
             {activity.title}
           </h2>
 
           {/* Time row */}
-          <div className="flex items-center space-x-1.5 mt-1 text-[#1E293B]">
-            <Clock className="w-4 h-4 text-[#334155] flex-shrink-0" />
+          <div className="flex items-center space-x-1.5 mt-1 text-[#1E293B] dark:text-[#CBD5E1]">
+            <Clock className="w-4 h-4 text-[#334155] dark:text-[#A8B8CC] flex-shrink-0" />
             <span className="text-[14px] font-semibold">
               {TimeUtils.formatTimeRangeAmPm(activity.startTime, activity.endTime)}
             </span>
@@ -69,8 +69,8 @@ export const CurrentActivityCard: React.FC<CurrentActivityCardProps> = ({
 
           {/* Location row */}
           {activity.location && (
-            <div className="flex items-center space-x-1.5 mt-0.5 text-[#1E293B]">
-              <MapPin className="w-4 h-4 text-[#1E293B] flex-shrink-0" />
+            <div className="flex items-center space-x-1.5 mt-0.5 text-[#1E293B] dark:text-[#CBD5E1]">
+              <MapPin className="w-4 h-4 text-[#1E293B] dark:text-[#A8B8CC] flex-shrink-0" />
               <span className="text-[14px] font-semibold truncate">
                 {activity.location}
               </span>
@@ -81,7 +81,7 @@ export const CurrentActivityCard: React.FC<CurrentActivityCardProps> = ({
 
       {/* Description below */}
       {activity.description && (
-        <p className="text-[13px] text-[#475569] leading-[19px] mt-3.5 font-normal">
+        <p className="text-[13px] text-[#475569] dark:text-[#A8B8CC] leading-[19px] mt-3.5 font-normal">
           {activity.description}
         </p>
       )}

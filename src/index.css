@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 @theme {
   --color-navy-deep: #0F2942;
   --color-navy-medium: #1E3A8A;
@@ -37,19 +39,83 @@
   color: #0F172A;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Theme tokens - Light mode */
+  --bg-primary: #F8FAFC;
+  --bg-secondary: #F1F5F9;
+  --surface: #FFFFFF;
+  --surface-elevated: #FFFFFF;
+  --surface-hover: #F1F5F9;
+  --border-color: #E2E8F0;
+  --border-subtle: #F1F5F9;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --accent-primary: #0284C7;
+  --accent-secondary: #0369A1;
+  --input-background: #F8FAFC;
+  --input-border: #E2E8F0;
+  --modal-background: #FFFFFF;
+  --navbar-background: #FFFFFF;
+  --navbar-border: #F1F5F9;
+  --scroll-thumb: #CBD5E1;
+  --scroll-thumb-hover: #94A3B8;
+}
+
+:root.dark,
+[data-theme="dark"] {
+  color-scheme: dark;
+  background-color: #060A12;
+  color: #F1F5F9;
+
+  /* Theme tokens - Dark mode (Navy, Slate, Sky) */
+  --bg-primary: #0B1220;
+  --bg-secondary: #111C2E;
+  --surface: #172338;
+  --surface-elevated: #1D2C43;
+  --surface-hover: #22344E;
+  --border-color: #293A52;
+  --border-subtle: #1E2D42;
+  --text-primary: #F1F5F9;
+  --text-secondary: #A8B8CC;
+  --text-muted: #64748B;
+  --accent-primary: #38BDF8;
+  --accent-secondary: #0284C7;
+  --input-background: #111C2E;
+  --input-border: #293A52;
+  --modal-background: #172338;
+  --navbar-background: #111C2E;
+  --navbar-border: #1E2D42;
+  --scroll-thumb: #293A52;
+  --scroll-thumb-hover: #38BDF8;
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background-color: #F1F5F9;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Custom scrollbar for subtle look */
+/* Smooth theme transition */
+html, body, header, nav, main, section, [role="button"], button, input {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body, header, nav, main, section, [role="button"], button, input {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -58,11 +124,11 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #CBD5E1;
+  background: var(--scroll-thumb);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #94A3B8;
+  background: var(--scroll-thumb-hover);
 }
 
 /* Animations */
@@ -75,7 +141,7 @@ body {
   animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* Installation surfaces share the app palette; scoped tokens support future themes. */
+/* Installation surfaces share the app palette */
 .install-surface {
   --install-surface: #fff;
   --install-text: var(--color-navy-deep);
@@ -88,17 +154,18 @@ body {
   border-color: var(--install-border);
 }
 .dark .install-surface, [data-theme="dark"] .install-surface {
-  --install-surface: var(--color-navy-dark);
-  --install-text: #f1f5f9;
-  --install-muted: #cbd5e1;
-  --install-border: #334155;
-  --install-soft: var(--color-slate-navy);
-  --install-accent: #7dd3fc;
+  --install-surface: #172338;
+  --install-text: #F1F5F9;
+  --install-muted: #A8B8CC;
+  --install-border: #293A52;
+  --install-soft: #1D2C43;
+  --install-accent: #38BDF8;
 }
 .install-muted { color: var(--install-muted); }
 .install-icon { background: var(--install-soft); color: var(--install-accent); }
 .install-close:hover { background: var(--install-soft); }
 .install-confirm { background: var(--color-blue-accent); color: white; }
+.dark .install-confirm, [data-theme="dark"] .install-confirm { background: #0284C7; color: white; }
 .install-surface button:focus-visible { outline: 2px solid var(--install-accent); outline-offset: 3px; }
 .install-dialog {
   margin: auto;
@@ -107,11 +174,12 @@ body {
   padding: 1.25rem;
   border: 1px solid var(--install-border);
   border-radius: 18px;
-  box-shadow: 0 24px 64px #0f294233;
+  box-shadow: 0 24px 64px rgba(11, 18, 32, 0.35);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
-.install-dialog::backdrop { background: #0b192c80; }
+.install-dialog::backdrop { background: rgba(11, 25, 44, 0.5); }
+.dark .install-dialog::backdrop, [data-theme="dark"] .install-dialog::backdrop { background: rgba(5, 10, 20, 0.75); }
 .install-dialog[open] { animation: install-enter 180ms ease-out both; }
 .install-dialog[open]::backdrop { animation: install-backdrop 180ms ease-out both; }
 .install-dialog[data-closing="true"] { animation: install-exit 180ms ease-in both; }

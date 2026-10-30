@@ -17,6 +17,7 @@ import {
   getActivityRemainingMinutes,
   getActivityMinutesUntilStart
 } from '../hooks/useClockTicker';
+import { useTheme } from '../context/PreferencesContext';
 
 interface DetailPageProps {
   activity: FsyActivity;
@@ -29,6 +30,7 @@ export const DetailPage: React.FC<DetailPageProps> = ({
   currentMinutes,
   onNavigateBack
 }) => {
+  const { isDark } = useTheme();
   const status = getActivityStatus(activity, currentMinutes);
   const categoryStyle = getCategoryStyle(activity.category, activity.title, activity.iconName);
   const CategoryIcon = categoryStyle.Icon;
@@ -39,18 +41,18 @@ export const DetailPage: React.FC<DetailPageProps> = ({
     : null;
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F8FAFC]">
+    <div className="flex-1 flex flex-col bg-[#F8FAFC] dark:bg-[#0B1220] transition-colors">
       {/* Top Navigation Bar */}
-      <div className="bg-white border-b border-[#E2E8F0] px-3 py-3 flex items-center sticky top-0 z-20 shadow-xs">
+      <div className="bg-white dark:bg-[#111C2E] border-b border-[#E2E8F0] dark:border-[#293A52] px-3 py-3 flex items-center sticky top-0 z-20 shadow-xs transition-colors">
         <button
           type="button"
           onClick={onNavigateBack}
           aria-label="Volver"
-          className="p-2 rounded-full hover:bg-slate-100 active:bg-slate-200 transition-colors text-[#0F2942] mr-2"
+          className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-[#1D2C43] active:bg-slate-200 dark:active:bg-[#253754] transition-colors text-[#0F2942] dark:text-[#F1F5F9] mr-2"
         >
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h1 className="text-[18px] font-bold text-[#0F2942]">
+        <h1 className="text-[18px] font-bold text-[#0F2942] dark:text-[#F1F5F9]">
           Detalle de Actividad
         </h1>
       </div>
@@ -63,19 +65,19 @@ export const DetailPage: React.FC<DetailPageProps> = ({
           <div
             className={`px-3 py-1 rounded-[10px] flex items-center space-x-2 text-[12px] font-bold ${
               status === 'CURRENT'
-                ? 'bg-[#D1FAE5] text-[#065F46]'
+                ? 'bg-[#D1FAE5] dark:bg-[#064E3B] text-[#065F46] dark:text-[#6EE7B7]'
                 : status === 'FINISHED'
-                  ? 'bg-[#F1F5F9] text-[#64748B]'
-                  : 'bg-[#E0F2FE] text-[#0284C7]'
+                  ? 'bg-[#F1F5F9] dark:bg-[#1D2C43] text-[#64748B] dark:text-[#A8B8CC]'
+                  : 'bg-[#E0F2FE] dark:bg-[#0C4A6E] text-[#0284C7] dark:text-[#38BDF8]'
             }`}
           >
             <div
               className={`w-2 h-2 rounded-full ${
                 status === 'CURRENT'
-                  ? 'bg-[#059669]'
+                  ? 'bg-[#059669] dark:bg-[#34D399]'
                   : status === 'FINISHED'
-                    ? 'bg-[#64748B]'
-                    : 'bg-[#0284C7]'
+                    ? 'bg-[#64748B] dark:bg-[#A8B8CC]'
+                    : 'bg-[#0284C7] dark:bg-[#38BDF8]'
               }`}
             />
             <span>
@@ -94,32 +96,35 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
           {/* Category Badge */}
           <div
-            className="px-3 py-1 rounded-[10px] flex items-center space-x-1.5 text-[12px] font-bold"
-            style={{ backgroundColor: categoryStyle.background, color: categoryStyle.tint }}
+            className="px-3 py-1 rounded-[10px] flex items-center space-x-1.5 text-[12px] font-bold transition-colors"
+            style={{
+              backgroundColor: isDark ? categoryStyle.darkBackground : categoryStyle.background,
+              color: isDark ? categoryStyle.darkTint : categoryStyle.tint
+            }}
           >
-            <CategoryIcon className="w-3.5 h-3.5" style={{ color: categoryStyle.tint }} />
+            <CategoryIcon className="w-3.5 h-3.5" style={{ color: isDark ? categoryStyle.darkTint : categoryStyle.tint }} />
             <span>{categoryStyle.label}</span>
           </div>
         </div>
 
         {/* Activity Title */}
-        <h2 className="text-[22px] font-extrabold text-[#0F2942] leading-[30px] pt-1">
+        <h2 className="text-[22px] font-extrabold text-[#0F2942] dark:text-[#F1F5F9] leading-[30px] pt-1">
           {activity.title}
         </h2>
 
         {/* Schedule & Duration Card */}
-        <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-4 flex items-center space-x-3.5 shadow-xs">
-          <div className="w-11 h-11 rounded-full bg-[#EFF6FF] flex items-center justify-center flex-shrink-0">
-            <Clock className="w-6 h-6 text-[#0284C7]" />
+        <div className="bg-white dark:bg-[#172338] rounded-[16px] border border-[#E2E8F0] dark:border-[#293A52] p-4 flex items-center space-x-3.5 shadow-xs transition-colors">
+          <div className="w-11 h-11 rounded-full bg-[#EFF6FF] dark:bg-[#1D2C43] flex items-center justify-center flex-shrink-0">
+            <Clock className="w-6 h-6 text-[#0284C7] dark:text-[#38BDF8]" />
           </div>
           <div>
-            <span className="text-[12px] font-semibold text-[#64748B] block">
+            <span className="text-[12px] font-semibold text-[#64748B] dark:text-[#A8B8CC] block">
               Horario
             </span>
-            <span className="text-[16px] font-bold text-[#0F2942] block">
+            <span className="text-[16px] font-bold text-[#0F2942] dark:text-[#F1F5F9] block">
               {TimeUtils.formatTimeRangeAmPm(activity.startTime, activity.endTime)}
             </span>
-            <span className="text-[12px] text-[#64748B]">
+            <span className="text-[12px] text-[#64748B] dark:text-[#A8B8CC]">
               {durationMinutes !== null
                 ? `Duración programada: ${durationMinutes} minutos`
                 : 'Hora de inicio oficial (hora de cierre abierta)'}
@@ -129,15 +134,15 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* Location Card */}
         {activity.location && (
-          <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-4 flex items-center space-x-3.5 shadow-xs">
-            <div className="w-11 h-11 rounded-full bg-[#F0FDF4] flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-6 h-6 text-[#059669]" />
+          <div className="bg-white dark:bg-[#172338] rounded-[16px] border border-[#E2E8F0] dark:border-[#293A52] p-4 flex items-center space-x-3.5 shadow-xs transition-colors">
+            <div className="w-11 h-11 rounded-full bg-[#F0FDF4] dark:bg-[#064E3B] flex items-center justify-center flex-shrink-0">
+              <MapPin className="w-6 h-6 text-[#059669] dark:text-[#34D399]" />
             </div>
             <div>
-              <span className="text-[12px] font-semibold text-[#64748B] block">
+              <span className="text-[12px] font-semibold text-[#64748B] dark:text-[#A8B8CC] block">
                 Ubicación
               </span>
-              <span className="text-[16px] font-bold text-[#0F2942] block">
+              <span className="text-[16px] font-bold text-[#0F2942] dark:text-[#F1F5F9] block">
                 {activity.location}
               </span>
             </div>
@@ -146,16 +151,16 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* HIGHLIGHTED: Counselor Responsibilities (Amber Card) */}
         {activity.counselorInstructions && (
-          <div className="bg-[#FFFBEB] rounded-[18px] border-1.5 border-[#FDE68A] p-4.5 shadow-xs">
+          <div className="bg-[#FFFBEB] dark:bg-[#251A0E] rounded-[18px] border-1.5 border-[#FDE68A] dark:border-[#78350F] p-4.5 shadow-xs transition-colors">
             <div className="flex items-center space-x-2.5 mb-3">
-              <div className="w-9 h-9 rounded-full bg-[#FEF3C7] flex items-center justify-center flex-shrink-0">
-                <Star className="w-5 h-5 text-[#D97706] fill-[#D97706]" />
+              <div className="w-9 h-9 rounded-full bg-[#FEF3C7] dark:bg-[#3D240F] flex items-center justify-center flex-shrink-0">
+                <Star className="w-5 h-5 text-[#D97706] dark:text-[#F59E0B] fill-[#D97706] dark:fill-[#F59E0B]" />
               </div>
-              <h3 className="text-[16px] font-extrabold text-[#92400E]">
+              <h3 className="text-[16px] font-extrabold text-[#92400E] dark:text-[#FDE68A]">
                 Instrucciones para Consejeros
               </h3>
             </div>
-            <p className="text-[15px] font-medium text-[#78350F] leading-[24px]">
+            <p className="text-[15px] font-medium text-[#78350F] dark:text-[#FEF3C7] leading-[24px]">
               {activity.counselorInstructions}
             </p>
           </div>
@@ -163,10 +168,10 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* Internal Segments (e.g. Activity 14) */}
         {activity.segments && activity.segments.length > 0 && (
-          <div className="bg-[#F0F9FF] rounded-[18px] border border-[#BAE6FD] p-4 space-y-3">
+          <div className="bg-[#F0F9FF] dark:bg-[#111C2E] rounded-[18px] border border-[#BAE6FD] dark:border-[#1E3A5F] p-4 space-y-3 transition-colors">
             <div className="flex items-center space-x-2">
-              <Layers className="w-5 h-5 text-[#0284C7]" />
-              <h3 className="text-[16px] font-bold text-[#0F2942]">
+              <Layers className="w-5 h-5 text-[#0284C7] dark:text-[#38BDF8]" />
+              <h3 className="text-[16px] font-bold text-[#0F2942] dark:text-[#F1F5F9]">
                 Segmentos de la actividad
               </h3>
             </div>
@@ -175,25 +180,25 @@ export const DetailPage: React.FC<DetailPageProps> = ({
               {activity.segments.map((segment: ActivitySegment, index: number) => (
                 <div
                   key={index}
-                  className="bg-white rounded-[12px] border border-[#E2E8F0] p-3 shadow-xs"
+                  className="bg-white dark:bg-[#172338] rounded-[12px] border border-[#E2E8F0] dark:border-[#293A52] p-3 shadow-xs transition-colors"
                 >
                   <div className="flex items-center justify-between mb-1">
-                    <h4 className="text-[14px] font-bold text-[#0F2942]">
+                    <h4 className="text-[14px] font-bold text-[#0F2942] dark:text-[#F1F5F9]">
                       {segment.title}
                     </h4>
-                    <span className="bg-[#E0F2FE] text-[#0284C7] px-2 py-0.5 rounded-[6px] text-[11px] font-bold">
+                    <span className="bg-[#E0F2FE] dark:bg-[#1D2C43] text-[#0284C7] dark:text-[#38BDF8] px-2 py-0.5 rounded-[6px] text-[11px] font-bold">
                       {TimeUtils.formatTimeRangeAmPm(segment.startTime, segment.endTime)}
                     </span>
                   </div>
 
                   {segment.manualReference && (
-                    <p className="text-[12px] font-semibold text-[#0369A1] mt-0.5">
+                    <p className="text-[12px] font-semibold text-[#0369A1] dark:text-[#38BDF8] mt-0.5">
                       Manual: {segment.manualReference}
                     </p>
                   )}
 
                   {segment.description && (
-                    <p className="text-[12px] text-[#1E293B] mt-1 leading-[18px]">
+                    <p className="text-[12px] text-[#1E293B] dark:text-[#CBD5E1] mt-1 leading-[18px]">
                       {segment.description}
                     </p>
                   )}
@@ -205,14 +210,14 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* General Description */}
         {activity.description && (
-          <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-4 shadow-xs">
+          <div className="bg-white dark:bg-[#172338] rounded-[16px] border border-[#E2E8F0] dark:border-[#293A52] p-4 shadow-xs transition-colors">
             <div className="flex items-center space-x-2 mb-2">
-              <Info className="w-5 h-5 text-[#0F2942]" />
-              <h3 className="text-[15px] font-bold text-[#0F2942]">
+              <Info className="w-5 h-5 text-[#0F2942] dark:text-[#F1F5F9]" />
+              <h3 className="text-[15px] font-bold text-[#0F2942] dark:text-[#F1F5F9]">
                 Descripción
               </h3>
             </div>
-            <p className="text-[14px] text-[#1E293B] leading-[22px]">
+            <p className="text-[14px] text-[#1E293B] dark:text-[#CBD5E1] leading-[22px]">
               {activity.description}
             </p>
           </div>
@@ -220,15 +225,15 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* Responsible Leaders */}
         {activity.responsible && (
-          <div className="bg-white rounded-[16px] border border-[#E2E8F0] p-4 flex items-center space-x-3.5 shadow-xs">
-            <div className="w-10 h-10 rounded-full bg-[#F1F5F9] flex items-center justify-center flex-shrink-0">
-              <UserCheck className="w-5 h-5 text-[#1E293B]" />
+          <div className="bg-white dark:bg-[#172338] rounded-[16px] border border-[#E2E8F0] dark:border-[#293A52] p-4 flex items-center space-x-3.5 shadow-xs transition-colors">
+            <div className="w-10 h-10 rounded-full bg-[#F1F5F9] dark:bg-[#1D2C43] flex items-center justify-center flex-shrink-0">
+              <UserCheck className="w-5 h-5 text-[#1E293B] dark:text-[#CBD5E1]" />
             </div>
             <div>
-              <span className="text-[12px] font-semibold text-[#64748B] block">
+              <span className="text-[12px] font-semibold text-[#64748B] dark:text-[#A8B8CC] block">
                 Responsables
               </span>
-              <span className="text-[14px] font-bold text-[#0F2942] block">
+              <span className="text-[14px] font-bold text-[#0F2942] dark:text-[#F1F5F9] block">
                 {activity.responsible}
               </span>
             </div>
@@ -237,13 +242,13 @@ export const DetailPage: React.FC<DetailPageProps> = ({
 
         {/* FSY Manual Reference */}
         {activity.manualReference && (
-          <div className="bg-[#F8FAFC] rounded-[16px] border border-[#E2E8F0] p-3.5 flex items-center space-x-3">
-            <Bookmark className="w-5 h-5 text-[#0284C7] flex-shrink-0" />
+          <div className="bg-[#F8FAFC] dark:bg-[#111C2E] rounded-[16px] border border-[#E2E8F0] dark:border-[#293A52] p-3.5 flex items-center space-x-3 transition-colors">
+            <Bookmark className="w-5 h-5 text-[#0284C7] dark:text-[#38BDF8] flex-shrink-0" />
             <div>
-              <span className="text-[11px] text-[#64748B] block">
+              <span className="text-[11px] text-[#64748B] dark:text-[#A8B8CC] block">
                 Referencia del Manual FSY
               </span>
-              <span className="text-[14px] font-semibold text-[#0F2942]">
+              <span className="text-[14px] font-semibold text-[#0F2942] dark:text-[#F1F5F9]">
                 {activity.manualReference}
               </span>
             </div>

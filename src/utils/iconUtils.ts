@@ -21,6 +21,8 @@ export interface CategoryStyle {
   label: string;
   tint: string;
   background: string;
+  darkTint: string;
+  darkBackground: string;
 }
 
 export function getCategoryStyle(category: string, title = '', _iconName = ''): CategoryStyle {
@@ -33,7 +35,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Navigation,
       label: 'Traslado',
       tint: '#0284C7',
-      background: '#F0F9FF'
+      background: '#F0F9FF',
+      darkTint: '#38BDF8',
+      darkBackground: '#13283F'
     };
   }
 
@@ -43,7 +47,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Church,
       label: 'Devocional',
       tint: '#4338CA',
-      background: '#EEF2FF'
+      background: '#EEF2FF',
+      darkTint: '#A5B4FC',
+      darkBackground: '#1E2342'
     };
   }
 
@@ -53,7 +59,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Utensils,
       label: 'Alimentación',
       tint: '#D97706',
-      background: '#FEF3C7'
+      background: '#FEF3C7',
+      darkTint: '#FBBF24',
+      darkBackground: '#2E2214'
     };
   }
 
@@ -63,7 +71,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Hand,
       label: 'Despedida',
       tint: '#7C3AED',
-      background: '#F3E8FF'
+      background: '#F3E8FF',
+      darkTint: '#C084FC',
+      darkBackground: '#291E3D'
     };
   }
 
@@ -73,7 +83,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Trophy,
       label: 'Recreación',
       tint: '#0D9488',
-      background: '#CCFBF1'
+      background: '#CCFBF1',
+      darkTint: '#2DD4BF',
+      darkBackground: '#132E2C'
     };
   }
 
@@ -82,7 +94,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Megaphone,
       label: 'Porras',
       tint: '#0284C7',
-      background: '#E0F2FE'
+      background: '#E0F2FE',
+      darkTint: '#38BDF8',
+      darkBackground: '#13283F'
     };
   }
 
@@ -91,7 +105,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Sparkles,
       label: 'Recreación',
       tint: '#BE185D',
-      background: '#FCE7F3'
+      background: '#FCE7F3',
+      darkTint: '#F472B6',
+      darkBackground: '#331A28'
     };
   }
 
@@ -100,7 +116,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Camera,
       label: 'Foto',
       tint: '#475569',
-      background: '#F1F5F9'
+      background: '#F1F5F9',
+      darkTint: '#CBD5E1',
+      darkBackground: '#1F2A38'
     };
   }
 
@@ -110,7 +128,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Users,
       label: 'Consejero',
       tint: '#15803D',
-      background: '#DCFCE7'
+      background: '#DCFCE7',
+      darkTint: '#4ADE80',
+      darkBackground: '#132E1F'
     };
   }
 
@@ -119,7 +139,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: UsersRound,
       label: 'Compañía',
       tint: '#1D4ED8',
-      background: '#DBEAFE'
+      background: '#DBEAFE',
+      darkTint: '#60A5FA',
+      darkBackground: '#152544'
     };
   }
 
@@ -128,7 +150,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: BookOpen,
       label: 'Evangelio',
       tint: '#15803D',
-      background: '#DCFCE7'
+      background: '#DCFCE7',
+      darkTint: '#4ADE80',
+      darkBackground: '#132E1F'
     };
   }
 
@@ -137,7 +161,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: Heart,
       label: 'Noche de Hogar',
       tint: '#C2410C',
-      background: '#FFEDD5'
+      background: '#FFEDD5',
+      darkTint: '#FB923C',
+      darkBackground: '#321D12'
     };
   }
 
@@ -146,7 +172,9 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
       Icon: ClipboardList,
       label: 'Registro',
       tint: '#1D4ED8',
-      background: '#DBEAFE'
+      background: '#DBEAFE',
+      darkTint: '#60A5FA',
+      darkBackground: '#152544'
     };
   }
 
@@ -155,6 +183,8 @@ export function getCategoryStyle(category: string, title = '', _iconName = ''): 
     Icon: Calendar,
     label: category.trim() || 'Actividad',
     tint: '#1E293B',
-    background: '#F1F5F9'
+    background: '#F1F5F9',
+    darkTint: '#CBD5E1',
+    darkBackground: '#1D2C43'
   };
 }

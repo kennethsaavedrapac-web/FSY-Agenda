@@ -1,10 +1,10 @@
 {
   "eventName": "FSY Distrito Granada 2026",
-  "eventDate": null,
+  "eventDate": "2026-11-07",
   "timeZone": "America/Managua",
   "sourceFile": "Agenda FSY 2026 update III-1.docx",
   "notes": [
-    "El documento no indica el día y mes del evento. Completar eventDate en formato AAAA-MM-DD antes de activar la detección por fecha.",
+    "Fecha del evento confirmada: 7 de noviembre de 2026, hora de Nicaragua (America/Managua).",
     "La despedida empieza a las 18:30 y no tiene hora de finalización indicada.",
     "El bloque de 13:00 a 13:50 contiene dos segmentos con duraciones explícitas de 20 y 30 minutos; sus horarios internos se deducen de la secuencia indicada.",
     "Las ubicaciones de traslados se derivan del destino incluido en el nombre del traslado."

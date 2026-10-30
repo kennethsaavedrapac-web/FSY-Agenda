@@ -100,14 +100,14 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-[#F8FAFC] relative">
+    <div className="flex-1 flex flex-col bg-[#F8FAFC] dark:bg-[#0B1220] relative transition-colors">
       {/* Top Header & Search Surface */}
-      <div className="bg-white border-b border-[#E2E8F0] shadow-xs sticky top-0 z-20 px-4 pt-3.5 pb-3">
-        <h1 className="text-[22px] font-extrabold text-[#0F2942] tracking-tight">
-          <button type="button" onClick={onNavigateBack} aria-label="Volver" className="inline-flex items-center justify-center w-11 h-11 -ml-2 mr-1 align-middle rounded-full hover:bg-slate-100"><ArrowLeft className="w-5 h-5" /></button>
+      <div className="bg-white dark:bg-[#111C2E] border-b border-[#E2E8F0] dark:border-[#293A52] shadow-xs sticky top-0 z-20 px-4 pt-3.5 pb-3 transition-colors">
+        <h1 className="text-[22px] font-extrabold text-[#0F2942] dark:text-[#F1F5F9] tracking-tight">
+          <button type="button" onClick={onNavigateBack} aria-label="Volver" className="inline-flex items-center justify-center w-11 h-11 -ml-2 mr-1 align-middle rounded-full hover:bg-slate-100 dark:hover:bg-[#1D2C43] transition-colors"><ArrowLeft className="w-5 h-5 text-[#0F2942] dark:text-[#F1F5F9]" /></button>
           Agenda Completa
         </h1>
-        <p className="text-[12px] font-normal text-[#64748B] mt-0.5">
+        <p className="text-[12px] font-normal text-[#64748B] dark:text-[#A8B8CC] mt-0.5">
           {filteredActivities.length === activities.length
             ? `${activities.length} actividades oficiales del FSY Distrito Granada 2026`
             : `${filteredActivities.length} de ${activities.length} actividades oficiales`}
@@ -115,19 +115,19 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
 
         {/* Search Bar Input */}
         <div className="mt-3 relative flex items-center">
-          <Search className="w-4 h-4 text-[#64748B] absolute left-3 pointer-events-none" />
+          <Search className="w-4 h-4 text-[#64748B] dark:text-[#A8B8CC] absolute left-3 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar actividad, lugar o instrucción..."
-            className="w-full pl-9 pr-9 py-2 rounded-[12px] bg-[#F8FAFC] border border-[#E2E8F0] text-[14px] text-[#0F172A] placeholder-[#64748B] focus:outline-none focus:border-[#0284C7] focus:bg-white transition-colors"
+            className="w-full pl-9 pr-9 py-2 rounded-[12px] bg-[#F8FAFC] dark:bg-[#172338] border border-[#E2E8F0] dark:border-[#293A52] text-[14px] text-[#0F172A] dark:text-[#F1F5F9] placeholder-[#64748B] dark:placeholder-[#64748B] focus:outline-none focus:border-[#0284C7] dark:focus:border-[#38BDF8] focus:bg-white dark:focus:bg-[#172338] transition-colors"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => setSearchQuery('')}
-              className="absolute right-2.5 p-1 rounded-full text-[#64748B] hover:text-[#0F172A]"
+              className="absolute right-2.5 p-1 rounded-full text-[#64748B] dark:text-[#A8B8CC] hover:text-[#0F172A] dark:hover:text-[#F1F5F9] transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -145,8 +145,8 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
                 onClick={() => setSelectedFilter(filter.id)}
                 className={`px-3.5 py-1.5 rounded-full text-[13px] whitespace-nowrap transition-all border ${
                   isSelected
-                    ? 'bg-[#0F2942] text-white font-bold border-[#0F2942] shadow-xs'
-                    : 'bg-[#F1F5F9] text-[#1E293B] font-medium border-[#E2E8F0] hover:bg-slate-200'
+                    ? 'bg-[#0F2942] dark:bg-[#38BDF8] text-white dark:text-[#0B1220] font-bold border-[#0F2942] dark:border-[#38BDF8] shadow-xs'
+                    : 'bg-[#F1F5F9] dark:bg-[#172338] text-[#1E293B] dark:text-[#A8B8CC] font-medium border-[#E2E8F0] dark:border-[#293A52] hover:bg-slate-200 dark:hover:bg-[#1D2C43]'
                 }`}
               >
                 {filter.label}
@@ -160,18 +160,18 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
       <div className="flex-1 px-4 py-3">
         {isLoading ? (
           <div className="flex items-center justify-center py-16">
-            <div className="w-8 h-8 border-4 border-[#0284C7] border-t-transparent rounded-full animate-spin" />
+            <div className="w-8 h-8 border-4 border-[#0284C7] dark:border-[#38BDF8] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : filteredActivities.length === 0 ? (
           /* Empty State */
           <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-            <div className="w-16 h-16 rounded-full bg-[#F1F5F9] flex items-center justify-center mb-3">
-              <Filter className="w-8 h-8 text-[#64748B]" />
+            <div className="w-16 h-16 rounded-full bg-[#F1F5F9] dark:bg-[#172338] flex items-center justify-center mb-3">
+              <Filter className="w-8 h-8 text-[#64748B] dark:text-[#A8B8CC]" />
             </div>
-            <h3 className="text-[17px] font-bold text-[#0F2942]">
+            <h3 className="text-[17px] font-bold text-[#0F2942] dark:text-[#F1F5F9]">
               No se encontraron actividades
             </h3>
-            <p className="text-[13px] text-[#64748B] max-w-xs mt-1">
+            <p className="text-[13px] text-[#64748B] dark:text-[#A8B8CC] max-w-xs mt-1">
               Intenta con otro término de búsqueda o cambia el filtro seleccionado.
             </p>
             <button
@@ -179,7 +179,7 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
               onClick={() => {
                 onViewChange({ searchQuery: '', selectedFilter: 'ALL' });
               }}
-              className="mt-4 px-4 py-2 bg-[#0284C7] text-white text-[13px] font-bold rounded-full hover:bg-[#0369A1] transition-colors"
+              className="mt-4 px-4 py-2 bg-[#0284C7] dark:bg-[#38BDF8] text-white dark:text-[#0B1220] text-[13px] font-bold rounded-full hover:bg-[#0369A1] dark:hover:bg-[#7DD3FC] transition-colors"
             >
               Restablecer filtros
             </button>
@@ -213,9 +213,9 @@ export const AgendaPage: React.FC<AgendaPageProps> = ({
         <button
           type="button"
           onClick={scrollToCurrent}
-          className="fixed bottom-[calc(var(--fsy-nav-space)+0.5rem)] right-4 md:right-[calc(50%-13rem+1rem)] z-30 bg-[#D1FAE5] text-[#059669] hover:bg-[#A7F3D0] active:scale-95 transition-all shadow-md px-3.5 py-2.5 rounded-full flex items-center space-x-1.5 font-bold text-[13px] border border-[#A7F3D0]"
+          className="fixed bottom-[calc(var(--fsy-nav-space)+0.5rem)] right-4 md:right-[calc(50%-13rem+1rem)] z-30 bg-[#D1FAE5] dark:bg-[#064E3B] text-[#059669] dark:text-[#6EE7B7] hover:bg-[#A7F3D0] dark:hover:bg-[#065F46] active:scale-95 transition-all shadow-md px-3.5 py-2.5 rounded-full flex items-center space-x-1.5 font-bold text-[13px] border border-[#A7F3D0] dark:border-[#047857]"
         >
-          <LocateFixed className="w-4 h-4 text-[#059669]" />
+          <LocateFixed className="w-4 h-4 text-[#059669] dark:text-[#6EE7B7]" />
           <span>Actual</span>
         </button>
       )}

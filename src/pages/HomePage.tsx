@@ -41,14 +41,14 @@ export const HomePage: React.FC<HomePageProps> = ({
 
   if (isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center min-h-[400px]">
-        <div className="w-8 h-8 border-4 border-[#0284C7] border-t-transparent rounded-full animate-spin" />
+      <div className="flex-1 flex items-center justify-center min-h-[400px] bg-white dark:bg-[#0B1220]">
+        <div className="w-8 h-8 border-4 border-[#0284C7] dark:border-[#38BDF8] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-white">
+    <div className="flex-1 flex flex-col bg-white dark:bg-[#0B1220] transition-colors">
       {/* Branded Temple Header matching reference mockup */}
       <TempleHeader
         isSimulationActive={simulationActive}
@@ -109,7 +109,7 @@ export const HomePage: React.FC<HomePageProps> = ({
         {/* --- 2. Section: "Hoy" Header --- */}
         <div className="pt-2">
           <div className="flex items-center justify-between mb-2.5">
-            <h2 className="text-[24px] font-extrabold text-[#0F172A] tracking-tight">
+            <h2 className="text-[24px] font-extrabold text-[#0F172A] dark:text-[#F1F5F9] tracking-tight">
               Hoy
             </h2>
 
@@ -117,7 +117,7 @@ export const HomePage: React.FC<HomePageProps> = ({
             <button
               type="button"
               onClick={onNavigateToAgenda}
-              className="bg-[#EFF6FF] text-[#0284C7] hover:bg-[#E0F2FE] px-3.5 py-1.5 rounded-full flex items-center space-x-1 transition-colors text-[13px] font-bold"
+              className="bg-[#EFF6FF] dark:bg-[#1D2C43] text-[#0284C7] dark:text-[#38BDF8] hover:bg-[#E0F2FE] dark:hover:bg-[#253754] px-3.5 py-1.5 rounded-full flex items-center space-x-1 transition-colors text-[13px] font-bold"
             >
               <span>Ver agenda completa</span>
               <ChevronRight className="w-4 h-4" strokeWidth={2.5} />

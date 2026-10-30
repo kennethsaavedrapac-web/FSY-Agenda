@@ -2,17 +2,19 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import type { FsyTab } from '../components/layout/BottomNav';
 import type { AgendaFilter } from '../models/types';
 
-type Route = { tab: FsyTab; activityId: number | null };
+type Route = { tab: FsyTab; activityId: number | null; overlay?: 'install' };
 export type AgendaView = { searchQuery: string; selectedFilter: AgendaFilter };
 type Entry = Route & { key: string; index: number; scrollY: number; agenda: AgendaView };
 const stateKey = 'fsyNavigationV1';
 
 function parseRoute(): Route {
+  if (window.location.hash === '#perfil/instalar') return { tab: 'settings', activityId: null, overlay: 'install' };
   const match = /^#detail-(\d+)$/.exec(window.location.hash);
   if (match) return { tab: 'agenda', activityId: Number(match[1]) };
   return { tab: window.location.hash === '#agenda' ? 'agenda' : window.location.hash === '#perfil' ? 'settings' : 'home', activityId: null };
 }
 function hash(route: Route) {
+  if (route.overlay === 'install') return '#perfil/instalar';
   return route.activityId !== null ? `#detail-${route.activityId}` : route.tab === 'settings' ? '#perfil' : route.tab === 'agenda' ? '#agenda' : '#inicio';
 }
 function createEntry(route: Route, index = 0): Entry {
@@ -73,6 +75,7 @@ export function useNavigation(contentReady: boolean) {
     visits.current.set(saved.key, saved);
     replace(saved);
     const next = createEntry(route, saved.index + 1);
+    if (route.overlay) next.scrollY = saved.scrollY;
     window.history.pushState({ [stateKey]: next }, '', hash(next));
     current.current = next;
     setEntry(next);
@@ -82,7 +85,7 @@ export function useNavigation(contentReady: boolean) {
     else {
       // A direct link has no internal predecessor. Replace it without trapping
       // the native Back button or adding a synthetic history entry.
-      const fallback = createEntry({ tab: current.current.activityId !== null ? 'agenda' : 'home', activityId: null });
+      const fallback = createEntry({ tab: current.current.overlay ? 'settings' : current.current.activityId !== null ? 'agenda' : 'home', activityId: null });
       replace(fallback);
       current.current = fallback;
       setEntry(fallback);
@@ -94,5 +97,5 @@ export function useNavigation(contentReady: boolean) {
     replace(next);
     setEntry(next);
   };
-  return { entry, back, setAgendaView, navigateTab: (tab: FsyTab) => navigate({ tab, activityId: null }), openDetail: (activityId: number) => navigate({ tab: current.current.tab, activityId }) };
+  return { entry, back, setAgendaView, openInstallInstructions: () => navigate({ tab: 'settings', activityId: null, overlay: 'install' }), navigateTab: (tab: FsyTab) => navigate({ tab, activityId: null }), openDetail: (activityId: number) => navigate({ tab: current.current.tab, activityId }) };
 }

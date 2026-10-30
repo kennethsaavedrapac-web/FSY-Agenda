@@ -74,3 +74,52 @@ body {
 .animate-pulse-subtle {
   animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Installation surfaces share the app palette; scoped tokens support future themes. */
+.install-surface {
+  --install-surface: #fff;
+  --install-text: var(--color-navy-deep);
+  --install-muted: var(--color-slate-muted);
+  --install-border: var(--color-border-subtle);
+  --install-soft: var(--color-blue-soft-bg);
+  --install-accent: var(--color-blue-accent);
+  color: var(--install-text);
+  background: var(--install-surface);
+  border-color: var(--install-border);
+}
+.dark .install-surface, [data-theme="dark"] .install-surface {
+  --install-surface: var(--color-navy-dark);
+  --install-text: #f1f5f9;
+  --install-muted: #cbd5e1;
+  --install-border: #334155;
+  --install-soft: var(--color-slate-navy);
+  --install-accent: #7dd3fc;
+}
+.install-muted { color: var(--install-muted); }
+.install-icon { background: var(--install-soft); color: var(--install-accent); }
+.install-close:hover { background: var(--install-soft); }
+.install-confirm { background: var(--color-blue-accent); color: white; }
+.install-surface button:focus-visible { outline: 2px solid var(--install-accent); outline-offset: 3px; }
+.install-dialog {
+  margin: auto;
+  width: min(28rem, calc(100% - 2rem - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px)));
+  max-height: calc(100dvh - 2rem - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  padding: 1.25rem;
+  border: 1px solid var(--install-border);
+  border-radius: 18px;
+  box-shadow: 0 24px 64px #0f294233;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.install-dialog::backdrop { background: #0b192c80; }
+.install-dialog[open] { animation: install-enter 180ms ease-out both; }
+.install-dialog[open]::backdrop { animation: install-backdrop 180ms ease-out both; }
+.install-dialog[data-closing="true"] { animation: install-exit 180ms ease-in both; }
+.install-dialog[data-closing="true"]::backdrop { animation: install-backdrop-exit 180ms ease-in both; }
+@keyframes install-enter { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes install-exit { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(12px); } }
+@keyframes install-backdrop { from { opacity: 0; } to { opacity: 1; } }
+@keyframes install-backdrop-exit { from { opacity: 1; } to { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .install-dialog[open], .install-dialog[open]::backdrop { animation: none; }
+}

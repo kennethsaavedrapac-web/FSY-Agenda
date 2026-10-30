@@ -18,6 +18,21 @@ contadores, preferencias antiguas, reanudación, simulación, recarga y medianoc
 
 ## Navegación
 
+Configuración incluye «Instalar aplicación». La raíz conserva `beforeinstallprompt`
+para invocarlo una sola vez, tras el clic del usuario. Si el navegador no lo ofrece
+o falla, se abre una guía manual; iPhone/iPad reciben los pasos de Safari. El estado
+instalado procede del modo `standalone`, `navigator.standalone` o `appinstalled`,
+sin guardar una confirmación ficticia en localStorage. Aceptar el aviso no se
+presenta por sí solo como instalación completada.
+
+La guía usa un diálogo accesible con foco contenido y restaurado, movimiento
+reducido y áreas seguras. `#perfil/instalar` permite que Atrás cierre primero el
+modal. Los colores están preparados para un ancestro `.dark` o `data-theme="dark"`.
+No se añadieron dependencias ni se alteró la política del service worker.
+
+Referencias de implementación: [aviso nativo](https://developer.mozilla.org/en-US/docs/Web/API/Window/beforeinstallprompt_event)
+y [instalación en iPhone](https://support.apple.com/en-lamr/guide/iphone/iphea86e5236/ios).
+
 Las rutas `#inicio`, `#agenda`, `#perfil` y `#detail-ID` usan el historial del
 navegador. Cada cambio de pantalla agrega una entrada; pulsar de nuevo la pestaña
 activa no agrega ninguna. Atrás y Adelante restauran la visita, incluidos los

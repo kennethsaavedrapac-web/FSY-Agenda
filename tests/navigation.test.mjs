@@ -61,6 +61,14 @@ test('native history traverses tabs and details, skips duplicates and restores e
     await app.travel('back');
     assert.equal(app.nav.entry.tab, 'home');
     await act(() => app.nav.navigateTab('settings'));
+    window.scrollY = 200;
+    await act(() => app.nav.openInstallInstructions());
+    assert.equal(app.nav.entry.overlay, 'install');
+    assert.equal(window.scrollY, 200);
+    await app.travel('back');
+    assert.equal(app.nav.entry.tab, 'settings');
+    assert.equal(app.nav.entry.overlay, undefined);
+    assert.equal(window.scrollY, 200);
     await app.travel('back');
     assert.equal(app.nav.entry.tab, 'home');
     await act(() => app.nav.navigateTab('agenda'));
@@ -116,4 +124,11 @@ test('direct detail and profile links have safe visible Back fallbacks without f
     assert.equal(profile.nav.entry.tab, 'home');
     assert.equal(window.history.length, 1);
   } finally { await profile.close(); }
+  const instructions = await setup('#perfil/instalar');
+  try {
+    assert.equal(instructions.nav.entry.overlay, 'install');
+    await act(() => instructions.nav.back());
+    assert.equal(window.location.hash, '#perfil');
+    assert.equal(window.history.length, 1);
+  } finally { await instructions.close(); }
 });

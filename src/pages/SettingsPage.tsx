@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   ArrowLeft,
+  Download,
+  ChevronRight,
   User,
   Bell,
   Sliders,
@@ -13,8 +15,13 @@ import { usePreferences } from '../context/PreferencesContext';
 import { EVENT_DATE, TimeUtils } from '../utils/timeUtils';
 import { useClock } from '../context/ClockContext';
 import type { PresetTime } from '../models/types';
+import type { PwaInstall } from '../hooks/usePwaInstall';
+import { InstallInstructionsDialog } from '../components/InstallInstructionsDialog';
 
 interface SettingsPageProps {
+  installation: PwaInstall;
+  installInstructionsOpen: boolean;
+  onOpenInstallInstructions: () => void;
   onNavigateBack: () => void;
   onReloadSchedule: () => Promise<void>;
 }
@@ -37,7 +44,12 @@ const SIMULATION_PRESETS: PresetTime[] = [
   { label: '18:45 Despedida', minutes: 18 * 60 + 45 }
 ];
 
-export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule, onNavigateBack }) => {
+export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule, onNavigateBack, installation, installInstructionsOpen, onOpenInstallInstructions }) => {
+  const activePage = useRef(false);
+  useEffect(() => {
+    activePage.current = true;
+    return () => { activePage.current = false; };
+  }, []);
   const {
     counselorName,
     companyName,
@@ -95,6 +107,24 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule, on
 
       {/* Settings Form Container */}
       <div className="flex-1 px-4 py-4 space-y-4">
+        <section className="install-surface rounded-[18px] border p-4.5 shadow-xs" aria-label="Instalación de la aplicación">
+          {installation.installed ? (
+            <div id="install-app" tabIndex={-1} role="status" className="flex items-center gap-2.5">
+              <CheckCircle2 className="w-6 h-6 text-[#059669]" aria-hidden="true" />
+              <span className="text-[16px] font-bold">Aplicación instalada</span>
+            </div>
+          ) : (
+            <button id="install-app" type="button" disabled={installation.busy}
+              onClick={async () => { if (await installation.requestInstall() === 'instructions' && activePage.current) onOpenInstallInstructions(); }}
+              className="w-full flex items-center gap-2.5 text-left rounded-[12px] min-h-11 disabled:opacity-70">
+              <span className="install-icon w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0"><Download className="w-5 h-5" aria-hidden="true" /></span>
+              <span className="flex-1"><span className="block text-[16px] font-bold">Instalar aplicación</span>
+                <span className="install-muted block text-[12px]">Accede rápidamente desde tu pantalla de inicio</span></span>
+              <ChevronRight className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+            </button>
+          )}
+          {installation.message && !installation.installed && <p role="status" className="install-muted mt-3 text-[12px]">{installation.message}</p>}
+        </section>
         {/* --- 1. COUNSELOR PROFILE CARD --- */}
         <div className="bg-white rounded-[18px] border border-[#E2E8F0] p-4.5 shadow-xs">
           <div className="flex items-center space-x-2.5 mb-3.5">
@@ -373,6 +403,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({ onReloadSchedule, on
       </div>
 
       {/* Floating Toast Notification */}
+      <InstallInstructionsDialog open={installInstructionsOpen} onClose={onNavigateBack} installation={installation} />
       {toastMessage && (
         <div className="fixed bottom-[calc(var(--fsy-nav-space)+0.5rem)] left-1/2 -translate-x-1/2 z-50 bg-[#0F2942] text-white px-4 py-2.5 rounded-full shadow-lg text-[13px] font-semibold flex items-center space-x-2 animate-bounce">
           <CheckCircle2 className="w-4 h-4 text-[#22C55E]" />

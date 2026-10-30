@@ -10,13 +10,15 @@ import { PreferencesProvider } from './context/PreferencesContext';
 import { ClockProvider } from './context/ClockContext';
 import { useClockTicker } from './hooks/useClockTicker';
 import { useActivities } from './hooks/useActivities';
+import { usePwaInstall } from './hooks/usePwaInstall';
 
 const AppContent: React.FC = () => {
+  const installation = usePwaInstall();
   const { activities, isLoading, reloadSchedule } = useActivities();
   const clock = useClockTicker(activities);
   const { currentMinutes } = clock;
 
-  const { entry, back, navigateTab, openDetail, setAgendaView } = useNavigation(!isLoading);
+  const { entry, back, navigateTab, openDetail, setAgendaView, openInstallInstructions } = useNavigation(!isLoading);
   const currentTab = entry.tab;
   const selectedActivityId = entry.activityId;
 
@@ -64,7 +66,9 @@ const AppContent: React.FC = () => {
             )}
 
             {currentTab === 'settings' && (
-              <SettingsPage onReloadSchedule={reloadSchedule} onNavigateBack={back} />
+              <SettingsPage onReloadSchedule={reloadSchedule} onNavigateBack={back}
+                installation={installation} installInstructionsOpen={entry.overlay === 'install'}
+                onOpenInstallInstructions={openInstallInstructions} />
             )}
 
             {/* Bottom Navigation fixed at bottom */}

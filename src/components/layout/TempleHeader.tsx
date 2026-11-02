@@ -112,10 +112,10 @@ export const TempleHeader: React.FC<TempleHeaderProps> = ({
       {/* Main Header Row */}
       <div className="relative z-10 flex items-center justify-between">
         <div className="flex items-center space-x-3.5">
-          {/* Temple Badge Logo (52x52 rounded 14px) */}
+          {/* Official FSY Badge Logo (52x52 rounded 14px) */}
           <div className="w-[52px] h-[52px] rounded-[14px] overflow-hidden shadow-sm flex-shrink-0 bg-[#0284C7] dark:bg-[#0369A1]">
             <img
-              src="/icons/ic_temple_logo.svg"
+              src="/icons/fsy_logo_2026.jpg"
               alt="FSY Granada"
               className="w-full h-full object-cover"
             />

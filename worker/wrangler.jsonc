@@ -1,0 +1,18 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "fsy-agenda-push",
+  "main": "index.mjs",
+  "compatibility_date": "2026-11-02",
+  "triggers": { "crons": ["* * * * *"] },
+  "vars": {
+    "APP_ORIGIN": "https://REEMPLAZAR.pages.dev",
+    "VAPID_SUBJECT": "mailto:REEMPLAZAR@example.com"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "fsy-agenda-push",
+    "database_id": "REEMPLAZAR_CON_ID_D1",
+    "migrations_dir": "migrations"
+  }],
+  "observability": { "enabled": true }
+}

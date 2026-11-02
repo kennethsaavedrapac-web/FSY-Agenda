@@ -1,8 +1,6 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { usePreferences } from '../context/PreferencesContext';
+import { useMemo } from 'react';
 import { useClock } from '../context/ClockContext';
 import type { FsyActivity, ActivityStatus } from '../models/types';
-import { TimeUtils } from '../utils/timeUtils';
 
 export function getActivityStatus(
   activity: FsyActivity,
@@ -44,15 +42,7 @@ export function isTransferActivity(activity: FsyActivity): boolean {
 }
 
 export function useClockTicker(activities: FsyActivity[]) {
-  const {
-    simulationActive,
-    notificationsEnabled,
-    advanceMinutes
-  } = usePreferences();
-
   const { currentMinutes, currentDate, realDate } = useClock();
-  const notifiedActivitiesRef = useRef<Set<string>>(new Set());
-  const currentDay = TimeUtils.getEventDateTime(currentDate).date;
 
   const sortedActivities = useMemo(() => {
     return [...activities].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -95,32 +85,6 @@ export function useClockTicker(activities: FsyActivity[]) {
       isEventFinished: finished
     };
   }, [sortedActivities, currentMinutes]);
-
-  // Notifications logic
-  useEffect(() => {
-    if (!notificationsEnabled || !nextActivity || simulationActive) return;
-
-    const minutesUntil = nextActivity.startMinutes - currentMinutes;
-    if (minutesUntil <= advanceMinutes && minutesUntil > 0) {
-      const notificationKey = `${currentDay}:${nextActivity.id}`;
-      if (!notifiedActivitiesRef.current.has(notificationKey)) {
-        if ('Notification' in window && Notification.permission === 'granted') {
-          try {
-            new Notification(`Próxima actividad en ${minutesUntil} min`, {
-              body: `${nextActivity.title} • ${nextActivity.location}`,
-              icon: '/icons/ic_temple_logo.svg'
-            });
-            notifiedActivitiesRef.current.add(notificationKey);
-            if ('vibrate' in navigator) {
-              navigator.vibrate([200, 100, 200]);
-            }
-          } catch (e) {
-            console.error('Notification error', e);
-          }
-        }
-      }
-    }
-  }, [currentMinutes, currentDay, nextActivity, notificationsEnabled, advanceMinutes, simulationActive]);
 
   return {
     realDate,

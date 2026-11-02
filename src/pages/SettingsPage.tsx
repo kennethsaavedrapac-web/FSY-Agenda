@@ -23,8 +23,10 @@ import { useClock } from '../context/ClockContext';
 import type { PresetTime, ThemeMode } from '../models/types';
 import type { PwaInstall } from '../hooks/usePwaInstall';
 import { InstallInstructionsDialog } from '../components/InstallInstructionsDialog';
+import type { PushReminders } from '../hooks/usePushReminders';
 
 interface SettingsPageProps {
+  reminders: PushReminders;
   installation: PwaInstall;
   installInstructionsOpen: boolean;
   onOpenInstallInstructions: () => void;
@@ -51,6 +53,7 @@ const SIMULATION_PRESETS: PresetTime[] = [
 ];
 
 export const SettingsPage: React.FC<SettingsPageProps> = ({
+  reminders,
   onReloadSchedule,
   onNavigateBack,
   installation,
@@ -76,7 +79,6 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
     setTheme,
     setCounselorName,
     setCompanyName,
-    setNotificationsEnabled,
     setAdvanceMinutes,
     setSimulationActive,
     setSimulatedMinutes,
@@ -238,7 +240,9 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               <input
                 type="checkbox"
                 checked={notificationsEnabled}
-                onChange={(e) => setNotificationsEnabled(e.target.checked)}
+                aria-label="Activar recordatorios de actividad"
+                disabled={reminders.busy}
+                onChange={(e) => e.target.checked ? void reminders.enable() : reminders.disable()}
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-slate-200 dark:bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 dark:after:border-slate-600 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#059669]"></div>
@@ -251,7 +255,7 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
                 Minutos de anticipación:
               </span>
               <div className="flex items-center space-x-2">
-                {[5, 10, 15, 20].map((mins) => {
+                {[1, 5, 10, 15, 20].map((mins) => {
                   const isSelected = advanceMinutes === mins;
                   return (
                     <button
@@ -271,6 +275,18 @@ export const SettingsPage: React.FC<SettingsPageProps> = ({
               </div>
             </div>
           )}
+        </div>
+
+        <div className="px-1 text-[12px] text-[#64748B] dark:text-[#A8B8CC] space-y-2">
+          <p>Permiso: {reminders.permission === 'granted' ? 'concedido' : reminders.permission === 'denied' ? 'bloqueado' : reminders.permission === 'default' ? 'pendiente' : 'no compatible'}.</p>
+          <p role="status" aria-live="polite">{reminders.status}</p>
+          <p>El sistema operativo o la conexión pueden retrasar la entrega. La simulación no modifica los avisos de la agenda real.</p>
+          <div className="flex gap-3 flex-wrap">
+            {!reminders.active && <button type="button" disabled={reminders.busy} onClick={() => void reminders.enable()} className="font-semibold text-[#0284C7] dark:text-[#38BDF8] disabled:opacity-50">Activar / renovar</button>}
+            <button type="button" disabled={reminders.busy} onClick={reminders.retry} className="font-semibold text-[#0284C7] dark:text-[#38BDF8] disabled:opacity-50">Sincronizar</button>
+            <button type="button" disabled={!reminders.active || reminders.busy} onClick={() => void reminders.test()} className="font-semibold text-[#0284C7] dark:text-[#38BDF8] disabled:opacity-50">Probar notificación</button>
+            <button type="button" disabled={!reminders.active || reminders.busy} onClick={() => void reminders.test(true)} className="font-semibold text-[#0284C7] dark:text-[#38BDF8] disabled:opacity-50">Probar con la PWA cerrada (1 min)</button>
+          </div>
         </div>
 
         {/* --- 3. APARIENCIA CARD (THEME SELECTOR) --- */}

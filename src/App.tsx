@@ -11,9 +11,11 @@ import { ClockProvider } from './context/ClockContext';
 import { useClockTicker } from './hooks/useClockTicker';
 import { useActivities } from './hooks/useActivities';
 import { usePwaInstall } from './hooks/usePwaInstall';
+import { usePushReminders } from './hooks/usePushReminders';
 
 const AppContent: React.FC = () => {
   const installation = usePwaInstall();
+  const reminders = usePushReminders();
   const { activities, isLoading, reloadSchedule } = useActivities();
   const clock = useClockTicker(activities);
   const { currentMinutes } = clock;
@@ -71,6 +73,7 @@ const AppContent: React.FC = () => {
 
             {currentTab === 'settings' && (
               <SettingsPage
+                reminders={reminders}
                 onReloadSchedule={reloadSchedule}
                 onNavigateBack={back}
                 installation={installation}

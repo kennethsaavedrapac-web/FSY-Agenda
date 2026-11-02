@@ -1,5 +1,14 @@
 # FSY Agenda — Distrito Granada 2026
 
+## Recordatorios reales
+
+Los recordatorios usan Web Push, el Service Worker existente y un Worker de
+Cloudflare con Cron y D1. Requieren configurar y desplegar el backend; guardar
+preferencias por sí solo no los activa. Consulta [configuración, pruebas y
+limitaciones](docs/recordatorios.md). A diferencia del reloj visual descrito abajo,
+los avisos solo se programan para la fecha real de la agenda oficial, nunca para
+la simulación ni todos los días.
+
 La agenda funciona como el día del FSY cualquier día del año. El reloj compartido
 usa `new Date()` y extrae únicamente la hora de `America/Managua`; la fecha oficial
 del 7 de noviembre de 2026 es informativa y no afecta estados ni cuentas regresivas.

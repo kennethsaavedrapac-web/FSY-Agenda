@@ -1,0 +1,4 @@
+/data/agenda.json
+  Cache-Control: no-store
+/push-sw.js
+  Cache-Control: no-cache

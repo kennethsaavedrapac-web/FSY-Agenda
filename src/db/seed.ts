@@ -6,12 +6,12 @@ import officialAgendaData from '../data/agenda.json';
 export async function ensureDataPopulated(forceReload = false): Promise<void> {
   const count = await db.activities.count();
   
-  if (count === 25 && !forceReload) {
+  const revision = JSON.stringify(officialAgendaData);
+  let savedRevision: string | null = null;
+  try { savedRevision = localStorage.getItem('fsy_agenda_revision'); } catch { /* storage restricted */ }
+  if (count === officialAgendaData.activities.length && savedRevision === revision && !forceReload) {
     return;
   }
-
-  // Clear existing data before reloading
-  await db.activities.clear();
 
   const rawActivities = (officialAgendaData as any).activities || [];
   
@@ -38,5 +38,9 @@ export async function ensureDataPopulated(forceReload = false): Promise<void> {
     };
   });
 
-  await db.activities.bulkPut(activitiesToInsert);
+  await db.transaction('rw', db.activities, async () => {
+    await db.activities.clear();
+    await db.activities.bulkPut(activitiesToInsert);
+  });
+  try { localStorage.setItem('fsy_agenda_revision', revision); } catch { /* storage restricted */ }
 }

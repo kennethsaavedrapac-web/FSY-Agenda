@@ -13,13 +13,12 @@ export interface PreferencesContextType extends CounselorPreferences {
   setSimulatedMinutes: (minutes: number) => void;
   setSimulatedDate: (date: string) => void;
   resetSimulation: () => void;
-  requestNotificationPermission: () => Promise<boolean>;
 }
 
 const DEFAULT_PREFS: CounselorPreferences = {
   counselorName: '',
   companyName: 'Compañía FSY',
-  notificationsEnabled: true,
+  notificationsEnabled: false,
   advanceMinutes: 10,
   simulationActive: false,
   simulatedMinutes: 518, // 08:38 a. m. (manual preview only)
@@ -102,7 +101,8 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
   const [advanceMinutes, setAdvanceMinutesState] = useState<number>(() => {
     const val = safeGetStorage('fsy_advance_minutes');
-    return val !== null ? parseInt(val, 10) : DEFAULT_PREFS.advanceMinutes;
+    const minutes = Number(val);
+    return [1, 5, 10, 15, 20].includes(minutes) ? minutes : DEFAULT_PREFS.advanceMinutes;
   });
 
   const [theme, setThemeState] = useState<ThemeMode>(() => {
@@ -172,12 +172,10 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const setNotificationsEnabled = (enabled: boolean) => {
     setNotificationsEnabledState(enabled);
     safeSetStorage('fsy_notifications_enabled', String(enabled));
-    if (enabled && 'Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
-    }
   };
 
   const setAdvanceMinutes = (minutes: number) => {
+    if (![1, 5, 10, 15, 20].includes(minutes)) return;
     setAdvanceMinutesState(minutes);
     safeSetStorage('fsy_advance_minutes', String(minutes));
   };
@@ -204,14 +202,6 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
     setSimulationActive(false);
   };
 
-  const requestNotificationPermission = async (): Promise<boolean> => {
-    if ('Notification' in window) {
-      const res = await Notification.requestPermission();
-      return res === 'granted';
-    }
-    return false;
-  };
-
   return (
     <PreferencesContext.Provider
       value={{
@@ -232,8 +222,7 @@ export const PreferencesProvider: React.FC<{ children: React.ReactNode }> = ({ c
         setSimulationActive,
         setSimulatedMinutes,
         setSimulatedDate,
-        resetSimulation,
-        requestNotificationPermission
+        resetSimulation
       }}
     >
       {children}

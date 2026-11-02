@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "prebuild": "node scripts/sync-agenda.mjs",
+    "push:keys": "node scripts/generate-vapid.mjs",
+    "push:dev": "wrangler dev --config worker/wrangler.jsonc --test-scheduled",
+    "push:deploy": "wrangler deploy --config worker/wrangler.jsonc",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
@@ -11,6 +15,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@block65/webcrypto-web-push": "^2.0.0",
     "dexie": "^4.4.7",
     "dexie-react-hooks": "^4.4.0",
     "lucide-react": "^1.63.0",
@@ -28,6 +33,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~7.0.2",
     "vite": "^8.3.5",
-    "vite-plugin-pwa": "^2.0.0"
+    "vite-plugin-pwa": "^2.0.0",
+    "wrangler": "^4.156.2"
   }
 }

@@ -5,7 +5,7 @@
   "compatibility_date": "2026-11-02",
   "triggers": { "crons": ["* * * * *"] },
   "vars": {
-    "APP_ORIGIN": "https://REEMPLAZAR.pages.dev",
+    "APP_ORIGIN": "https://fsy-agenda.kenneth-studio.workers.dev",
     "VAPID_SUBJECT": "mailto:REEMPLAZAR@example.com"
   },
   "d1_databases": [{

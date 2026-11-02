@@ -6,12 +6,12 @@
   "triggers": { "crons": ["* * * * *"] },
   "vars": {
     "APP_ORIGIN": "https://fsy-agenda.kenneth-studio.workers.dev",
-    "VAPID_SUBJECT": "mailto:REEMPLAZAR@example.com"
+    "VAPID_SUBJECT": "mailto:kennethsaavedrapac@gmail.com"
   },
   "d1_databases": [{
     "binding": "DB",
     "database_name": "fsy-agenda-push",
-    "database_id": "REEMPLAZAR_CON_ID_D1",
+    "database_id": "8ce842c9-90d0-4ded-9ba1-040f679d4604",
     "migrations_dir": "migrations"
   }],
   "observability": { "enabled": true }

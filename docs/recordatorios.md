@@ -1,5 +1,22 @@
 # Recordatorios Web Push
 
+## Estado del despliegue (2 de noviembre de 2026)
+
+El backend `fsy-agenda-push.kenneth-studio.workers.dev` está publicado con Cron
+cada minuto, D1 `8ce842c9-90d0-4ded-9ba1-040f679d4604`, migración aplicada y
+ambas claves VAPID guardadas como secrets. La clave privada se generó en memoria
+y no se guardó en el repositorio.
+
+La PWA está alojada como assets estáticos en Workers, no en Pages. Su origen es
+`https://fsy-agenda.kenneth-studio.workers.dev`. `.env.production` contiene la URL
+pública del backend. Para próximos despliegues del frontend, ejecuta
+`npm run build` seguido de `npx wrangler deploy --config wrangler.app.jsonc`.
+El backend conserva su comando independiente `npm run push:deploy`.
+
+La configuración HTTP y la lectura de la agenda fueron verificadas. Todavía
+falta confirmar recepción en un dispositivo real con el botón de prueba; los
+pasos de configuración de abajo quedan como referencia para reproducir el entorno.
+
 ## Diagnóstico y arquitectura
 
 Antes, `useClockTicker` ejecutaba `new Notification` únicamente con React abierto,
@@ -42,8 +59,8 @@ de caché personalizadas de Cloudflare deben respetar el `no-store` de esta ruta
 ## Configurar Cloudflare
 
 Requisitos: Node 22 o posterior, cuenta Cloudflare y Pages publicado con HTTPS.
-Los comandos se ejecutan en la raíz del repositorio. No se ha desplegado este
-Worker ni se han creado recursos en tu cuenta desde esta implementación.
+Los comandos se ejecutan en la raíz del repositorio. El entorno actual ya está
+configurado según el estado de despliegue indicado arriba; no regeneres sus claves.
 
 1. Instala dependencias y autentícate:
 
